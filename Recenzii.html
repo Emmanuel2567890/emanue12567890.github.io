@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Recenzii   </title>
+
+    <!-- Preload -->
+    <link rel="preload" as="image" href="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/HM%20MC%2F58e030c9-f51d-4b5f-abb2-8b88ea0f9507.png?alt=media&token=abbedc81-126b-44a2-b492-66eac45a447d">
+<!-- Preload -->
+    <link rel="preload" as="image" href="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/botezuri.png?alt=media&token=952e6adf-9bf6-4ada-ac2f-c9de0cb19b3a">
+<link rel="icon" type="image/jpeg" href="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/HM%20MC%2F7.png?alt=media&token=9c293a04-1061-4429-952c-fcff87838896" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@100;200;300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            softpink: "#FAD0E6",
+                            magenta: "#E467DA",
+                            ice: "#b8f4ff",
+                            dark: "#130925",
+                            blue: "#718ce5",
+                            alabaster: "#FDF2F5"
+                        },
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', "serif"],
+                        sans: ['"Montserrat"', "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+
+<style type="text/css">
+    :root { --soft-pink: #FAD0E6; --magenta: #E467DA; --dark: #130925; --ice: #b8f4ff; --blue: #718ce5; }
+    
+    html, body { 
+        width: 100%; 
+        max-width: 100vw; 
+        overflow-x: hidden; 
+        margin: 0; 
+        padding: 0; 
+        background-color: var(--dark); 
+        color: var(--soft-pink); 
+        font-family: 'Montserrat', sans-serif; 
+    }
+    
+    /* Background Gradient */
+    body { background: radial-gradient(circle at center, #2E1065 0%, #0D071A 100%); min-height: 100vh; }
+
+    /* Nav Background */
+    nav { background: radial-gradient(circle at center, #2E1065 0%, #0D071A 100%); box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: padding 0.5s ease; width: 100%; }
+    nav.scrolled { padding-top: 15px !important; padding-bottom: 15px !important; }
+
+    /* --- NEW DESKTOP NAV STYLES --- */
+    .nav-link-desktop {
+        position: relative;
+        color: var(--soft-pink);
+        text-decoration: none;
+        padding-bottom: 5px;
+        transition: color 0.3s ease;
+    }
+    .nav-link-desktop::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 1px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--ice);
+        transform-origin: bottom right;
+        transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+    }
+    .nav-link-desktop:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+    .nav-link-desktop:hover {
+        color: var(--ice);
+        text-shadow: 0 0 15px rgba(184, 244, 255, 0.4);
+    }
+
+    /* --- NEW MOBILE MENU STYLES --- */
+    .mobile-menu { position: fixed; inset: 0; background: var(--dark); z-index: 100; transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    .mobile-menu.active { transform: translateX(0); }
+    
+    .mobile-menu-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        padding-top: 80px;
+        padding-bottom: 40px;
+    }
+    
+    .mobile-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        font-family: 'Cormorant Garamond', serif;
+        font-style: italic;
+        font-size: 2rem;
+        color: var(--soft-pink);
+        transition: all 0.3s ease;
+        margin: 0;
+        line-height: 1;
+        text-align: center;
+    }
+    .mobile-item span { text-align: center; display: block; }
+    .mobile-item i { font-size: 1.2rem; color: var(--blue); opacity: 0.7; transition: color 0.3s ease; }
+    .mobile-item:hover { transform: scale(1.05); color: var(--magenta); }
+    
+    /* Hamburger */
+    .hamburger { width: 30px; height: 20px; position: relative; cursor: pointer; z-index: 110; }
+    .hamburger span { display: block; position: absolute; height: 2px; width: 100%; background: var(--soft-pink); border-radius: 9px; left: 0; }
+    .hamburger span:nth-child(1) { top: 0px; }
+    .hamburger span:nth-child(2) { top: 9px; }
+    .hamburger span:nth-child(3) { top: 18px; }
+
+    /* Frame & Form Styles */
+    .indigo-frame { position: relative; padding: 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(113, 140, 229, 0.2); transition: all 0.4s ease; }
+    .indigo-frame:hover { border-color: var(--ice); transform: translateY(-5px); }
+    .glow-soft { position: absolute; width: 600px; height: 600px; filter: blur(150px); pointer-events: none; z-index: 0; opacity: 0.15; }
+    
+    /* Input/Star Styles */
+    .star-rating i { cursor: pointer; transition: 0.2s; color: #333; }
+    .star-rating i.active { color: var(--magenta); text-shadow: 0 0 10px rgba(228,103,218,0.5); }
+    .progress-bar { height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--magenta); transition: width 0.8s ease; }
+    input, textarea { background: rgba(255,255,255,0.05); border: 1px solid rgba(113,140,229,0.2); color: white; outline: none; }
+    
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<nav class="fixed w-full z-50 px-6 md:px-10 py-6 transition-all duration-500 flex items-center justify-between" id="main-nav">
+    <!-- 1. Logo (Left) -->
+    <div class="w-32 md:w-44 flex-shrink-0">
+        <a href="index.html">
+            <img src="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/botezuri.png?alt=media&token=952e6adf-9bf6-4ada-ac2f-c9de0cb19b3a" class="h-12 w-auto object-contain hover:opacity-80 transition-opacity" class="h-12 w-auto object-contain hover:opacity-80 transition-opacity" alt="Logo" />
+        </a>
+    </div>
+    
+    <!-- 2. Desktop Links (Center) -->
+    <div class="hidden md:flex flex-1 justify-center items-center gap-12 text-[10px] uppercase tracking-[0.2em] font-medium">
+        <a href="index.html" class="nav-link-desktop">Acasă</a>
+        <a href="index.html#philosophy" class="nav-link-desktop">Biografie</a>
+        <a href="index.html#collection" class="nav-link-desktop">Colecții</a>
+        <a href="tombola.html" class="nav-link-desktop text-brand-blue">Tombolă</a>
+        <a href="index.html#bespoke" class="nav-link-desktop text-brand-magenta">Comenzi Personalizate</a>
+    </div>
+
+    <!-- 3. Auth Button + Hamburger (Right) -->
+    <div class="w-32 md:w-44 flex justify-end items-center gap-6 flex-shrink-0">
+        <!-- New Minimalist Login Button -->
+        <button onclick="handleAccountClick()" class="login-trigger-text hidden md:flex items-center gap-2 text-[9px] font-bold tracking-[0.2em] uppercase text-brand-ice/80 hover:text-white transition-colors group">
+            <i class="fa-regular fa-user text-xs group-hover:text-brand-magenta transition-colors"></i>
+            <span>Log In</span>
+        </button>
+
+        <!-- Hamburger Icon -->
+        <div class="hamburger md:hidden group cursor-pointer" onclick="toggleMenu()">
+            <span class="group-hover:bg-brand-magenta transition-colors"></span>
+            <span class="group-hover:bg-brand-magenta transition-colors"></span>
+            <span class="group-hover:bg-brand-magenta transition-colors"></span>
+        </div>
+    </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <!-- Close Button -->
+    <button onclick="toggleMenu()" class="absolute top-6 right-6 p-4 text-brand-softpink hover:text-brand-magenta hover:rotate-90 transition-all duration-500 z-50">
+        <i class="fa-solid fa-xmark text-3xl"></i>
+    </button>
+
+    <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+    
+    <div class="mobile-menu-container w-full h-full flex flex-col justify-between pt-20 pb-10">
+        
+        <!-- Navigation Links -->
+        <div class="flex flex-col gap-5 items-center justify-center flex-grow">
+            <a href="index.html" class="mobile-item" onclick="toggleMenu()">
+                <i class="fa-solid fa-house-chimney"></i>
+                <span>Acasă</span>
+            </a>
+            <a href="index.html#philosophy" class="mobile-item" onclick="toggleMenu()">
+                <i class="fa-solid fa-feather-pointed"></i>
+                <span>Biografie</span>
+            </a>
+            <a href="index.html#collection" class="mobile-item" onclick="toggleMenu()">
+                <i class="fa-solid fa-gem"></i>
+                <span>Colecții</span>
+            </a>
+            <a href="tombola.html" class="mobile-item" onclick="toggleMenu()">
+                <i class="fa-solid fa-ticket text-brand-blue"></i>
+                <span class="text-brand-blue">Tombolă</span>
+            </a>
+            <a href="index.html#bespoke" class="mobile-item" onclick="toggleMenu()">
+                <i class="fa-solid fa-wand-magic-sparkles text-brand-magenta"></i>
+                <span class="text-brand-magenta leading-none">Comenzi<br>Personalizate</span>
+            </a>
+        </div>
+
+        <!-- Login & Socials -->
+        <div class="flex flex-col items-center gap-6 mt-2">
+            <button onclick="handleAccountClick(); toggleMenu()" class="login-trigger-text flex items-center gap-3 px-10 py-3 border border-brand-ice/20 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-brand-ice hover:bg-brand-ice/10 transition-all">
+                <i class="fa-regular fa-user"></i>
+                <span>Log In</span>
+            </button>
+            <div class="flex items-center gap-8">
+                <a href="https://www.instagram.com/handmade.candles.mary" target="_blank" class="text-2xl text-brand-blue/60 hover:text-brand-magenta hover:scale-110 transition-all"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@handmade.candles.soap" target="_blank" class="text-2xl text-brand-blue/60 hover:text-brand-magenta hover:scale-110 transition-all"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+            <p class="text-[8px] uppercase tracking-widest text-brand-dark/50">Handmade by Mary</p>
+        </div>
+    </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="fixed inset-0 z-[120] hidden flex items-center justify-center px-4">
+    <div class="absolute inset-0 bg-brand-dark/90 backdrop-blur-md" onclick="toggleAuthModal()"></div>
+    <div class="relative bg-[#1a0f2e] border border-brand-blue/20 p-8 md:p-12 w-full max-w-md rounded-sm shadow-2xl">
+        <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-brand-blue/50 hover:text-brand-ice"><i class="fa-solid fa-xmark text-2xl"></i></button>
+        <h2 id="auth-title" class="text-3xl font-serif text-brand-ice mb-8 text-center italic">Autentificare</h2>
+        <form id="authForm" class="space-y-6">
+            <input type="email" id="auth-email" placeholder="Email" required class="w-full bg-brand-dark/50 border border-brand-blue/10 px-4 py-3 text-brand-ice outline-none">
+            <input type="password" id="auth-pass" placeholder="Parolă" required class="w-full bg-brand-dark/50 border border-brand-blue/10 px-4 py-3 text-brand-ice outline-none">
+            <button type="submit" class="w-full bg-brand-magenta py-4 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-blue transition-all">Continuă</button>
+        </form>
+        <div class="relative my-8 text-center"><span class="absolute inset-0 flex items-center"><span class="w-full border-t border-brand-blue/10"></span></span><span class="relative bg-[#1a0f2e] px-4 text-[9px] uppercase tracking-widest text-brand-blue/30">sau</span></div>
+        <button onclick="window.authFunctions.loginWithGoogle()" class="w-full border border-brand-blue/20 py-4 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-blue/10 transition-all flex items-center justify-center gap-3 text-brand-ice"><i class="fa-brands fa-google"></i> Intră cu Google</button>
+        <p class="mt-8 text-center text-[10px] tracking-widest text-brand-blue/40 uppercase">Nu ai cont? <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-brand-ice border-b border-brand-ice/20">Creează Cont</button></p>
+    </div>
+</div>
+
+<!-- USER PROFILE MODAL -->
+<div id="userModal" class="fixed inset-0 z-[130] hidden flex items-center justify-center px-4">
+    <div class="absolute inset-0 bg-brand-dark/95 backdrop-blur-xl" onclick="toggleUserModal()"></div>
+    <div class="relative bg-[#1a0f2e] border border-brand-blue/20 p-10 w-full max-w-sm rounded-lg shadow-2xl text-center">
+        <img id="user-img" src="" class="w-24 h-24 mx-auto mb-6 rounded-full border-2 border-brand-magenta object-cover shadow-2xl">
+        <h3 id="user-name" class="text-brand-ice font-serif text-2xl mb-1 italic">Utilizator</h3>
+        <p id="user-email" class="text-brand-blue/50 text-[10px] uppercase tracking-widest mb-8">email@exemplu.com</p>
+        <button onclick="window.authFunctions.logout()" class="w-full border border-red-500/30 text-red-400 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all">Log Out</button>
+    </div>
+</div>
+
+<main class="pt-32 pb-20 px-6 max-w-5xl mx-auto relative min-h-screen">
+    <div class="glow-soft" style="background: #9E4FE8; top: 0; left: 50%; transform: translateX(-50%); opacity: 0.1;"></div>
+
+    <!-- Header Section -->
+    <div class="text-center mb-16 relative z-10">
+        <span class="text-brand-magenta text-[10px] uppercase tracking-[0.6em] mb-4 block font-bold">Feedback Clienți</span>
+        <h1 class="text-5xl md:text-7xl font-serif italic mb-6">Recenzii <br/> <span class="text-white/20 not-italic"></span></h1>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 items-center indigo-frame rounded-2xl relative z-10 bg-brand-dark/40 backdrop-blur-md">
+        <div class="text-center md:border-r border-white/10 p-4">
+            <div class="text-6xl font-serif text-brand-ice mb-2" id="avgScore">0.0</div>
+            <div class="text-brand-magenta text-lg mb-2" id="avgStars">☆☆☆☆☆</div>
+            <div class="text-[10px] uppercase tracking-widest opacity-50"><span id="totalCount">0</span> Recenzii</div>
+        </div>
+        <div class="md:col-span-2 space-y-3 p-4">
+            <div class="flex items-center gap-4 text-[10px] tracking-widest">
+                <span class="w-12">5 Stele</span>
+                <div class="progress-bar flex-1"><div id="bar5" class="progress-fill" style="width: 0%"></div></div>
+                <span id="perc5" class="w-8">0%</span>
+            </div>
+            <div class="flex items-center gap-4 text-[10px] tracking-widest">
+                <span class="w-12">4 Stele</span>
+                <div class="progress-bar flex-1"><div id="bar4" class="progress-fill" style="width: 0%"></div></div>
+                <span id="perc4" class="w-8">0%</span>
+            </div>
+            <div class="flex items-center gap-4 text-[10px] tracking-widest">
+                <span class="w-12">3 Stele</span>
+                <div class="progress-bar flex-1"><div id="bar3" class="progress-fill" style="width: 0%"></div></div>
+                <span id="perc3" class="w-8">0%</span>
+            </div>
+            <div class="flex items-center gap-4 text-[10px] tracking-widest">
+                <span class="w-12">2 Stele</span>
+                <div class="progress-bar flex-1"><div id="bar2" class="progress-fill" style="width: 0%"></div></div>
+                <span id="perc2" class="w-8">0%</span>
+            </div>
+            <div class="flex items-center gap-4 text-[10px] tracking-widest">
+                <span class="w-12">1 Stea</span>
+                <div class="progress-bar flex-1"><div id="bar1" class="progress-fill" style="width: 0%"></div></div>
+                <span id="perc1" class="w-8">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Feed -->
+    <div id="reviewsList" class="space-y-6 mb-20 relative z-10">
+        <div class="text-center py-10 opacity-30 italic">Se încarcă recenziile...</div>
+    </div>
+
+    <!-- Input Area -->
+    <div id="writeReviewSection" class="hidden indigo-frame p-8 rounded-2xl relative z-10 border-t-2 border-brand-magenta bg-brand-dark/60">
+        <h2 class="text-3xl font-serif italic mb-8 text-center text-brand-ice">Spune-ne părerea ta</h2>
+        <div class="flex justify-center gap-4 mb-8 star-rating text-2xl" id="starSelector">
+            <i class="fas fa-star" data-val="1"></i><i class="fas fa-star" data-val="2"></i><i class="fas fa-star" data-val="3"></i><i class="fas fa-star" data-val="4"></i><i class="fas fa-star" data-val="5"></i>
+        </div>
+        <textarea id="revText" class="w-full p-6 rounded-lg mb-6 h-32 resize-none bg-white/5 border border-white/10" placeholder="Cum a fost experiența ta cu florile noastre?"></textarea>
+        <div class="flex justify-center">
+            <button id="submitReview" class="bg-brand-magenta text-white px-12 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-brand-blue transition-all">Trimite Recenzia</button>
+        </div>
+    </div>
+
+    <div id="alreadyPostedMsg" class="hidden text-center p-8 indigo-frame rounded-2xl italic opacity-60">
+        Vă mulțumim! Ați lăsat deja o recenzie pentru MC Artistry.
+    </div>
+
+    <div id="loginToPostMsg" class="text-center p-8 indigo-frame rounded-2xl">
+        <p class="mb-4 opacity-70">Trebuie să fii logat pentru a lăsa o recenzie.</p>
+        <button onclick="window.toggleAuthModal()" class="text-brand-magenta font-bold uppercase tracking-widest text-[10px] border-b border-brand-magenta/30 pb-1">Loghează-te acum</button>
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-[#0D071A] pt-24 pb-12 px-6 md:px-10 border-t border-brand-blue/10 relative overflow-hidden">
+    <!-- Fundal subtil cu reflexii -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-96 bg-brand-purple/5 blur-[120px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto text-center">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 items-start">
+            
+<!-- 1. BRAND COLUMN - Centered -->
+            <div class="flex flex-col items-center space-y-8 order-1">
+                <img 
+                    src="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/botezuri.png?alt=media&token=952e6adf-9bf6-4ada-ac2f-c9de0cb19b3a" 
+                    alt="MC Logo" 
+                    class="w-32 md:w-40 opacity-90 hover:scale-105 transition-transform duration-500"
+                />
+                <p class="text-brand-blue/50 text-[11px] md:text-xs max-w-xs font-light leading-loose uppercase tracking-[0.2em]">
+                    MC Handmade Marry. <br>
+                    Artă botanică românească. Flori care nu se ofilesc niciodată, sculptate manual pentru momente de neuitat.
+                </p>
+                <div class="flex justify-center space-x-5">
+                    <a href="https://www.instagram.com/handmade.candles.mary" target="_blank" class="w-10 h-10 border border-brand-blue/20 rounded-full flex items-center justify-center text-brand-blue hover:bg-brand-magenta hover:border-transparent hover:text-white transition-all duration-300">
+                        <i class="fa-brands fa-instagram text-lg"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@handmade.candles.soap" target="_blank" class="w-10 h-10 border border-brand-blue/20 rounded-full flex items-center justify-center text-brand-blue hover:bg-brand-magenta hover:border-transparent hover:text-white transition-all duration-300">
+                        <i class="fa-brands fa-tiktok text-lg"></i>
+                    </a>
+                    <a href="https://api.whatsapp.com/send?phone=4917675891440" target="_blank" class="w-10 h-10 border border-brand-blue/20 rounded-full flex items-center justify-center text-brand-blue hover:bg-brand-magenta hover:border-transparent hover:text-white transition-all duration-300">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. NAVIGATION COLUMN - Centered -->
+            <div class="flex flex-col items-center order-2 md:order-2">
+                <h5 class="text-brand-ice text-[10px] uppercase tracking-[0.4em] mb-8 font-bold">Navigare</h5>
+                <ul class="text-brand-blue/60 text-[10px] space-y-5 font-medium tracking-[0.2em]">
+                    <li><a href="#home" class="hover:text-brand-magenta transition-colors">ACASĂ</a></li>
+                    <li><a href="#philosophy" class="hover:text-brand-magenta transition-colors">DESPRE BRAND</a></li>
+                    <li><a href="#collection" class="hover:text-brand-magenta transition-colors">GALERIE PRODUSE</a></li>
+                    <li><a href="#bespoke" class="hover:text-brand-magenta transition-colors">COMENZI SPECIALE</a></li>
+                </ul>
+            </div>
+
+<!-- 3. DEVELOPER COLUMN - Centered with Tri-Contact -->
+            <div class="flex flex-col items-center order-3 md:order-3">
+                <div class="relative group">
+                    <!-- Glow Effect -->
+                    <div class="absolute inset-0 bg-brand-ice/20 blur-2xl rounded-full group-hover:bg-brand-magenta/30 transition-all duration-700"></div>
+                    
+                    <!-- Creator Avatar -->
+                    <a href="https://www.tiktok.com/@lost_soul_zzz" target="_blank" class="relative block w-24 h-24 mb-6 rounded-full border-2 border-brand-ice/30 p-1 overflow-hidden transition-transform duration-500 group-hover:scale-110 group-hover:border-brand-magenta">
+                        <img 
+                            src="https://iili.io/f1ddIfe.png" 
+                            alt="Lost Soul" 
+                            class="w-full h-full object-cover rounded-full bg-[#0D071A]"
+                        />
+                    </a>
+                </div>
+                
+                <h6 class="text-brand-ice/80 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">Website realizat de</h6>
+                <p class="text-brand-magenta font-serif italic text-xl mb-4">Lost Soul / Nica Emmanuel</p>
+                
+                <!-- Contact Links Container -->
+                <div class="flex flex-col items-center gap-3">
+                    <span class="text-[9px] uppercase tracking-[0.4em] font-bold text-brand-blue/50">Contact Developer</span>
+                    
+                    <div class="flex items-center gap-6">
+                        <!-- Discord -->
+                        <a href="https://discord.com/users/1063511180376817755" target="_blank" class="text-brand-blue/50 hover:text-[#5865F2] hover:scale-125 transition-all duration-300" title="Discord">
+                            <i class="fa-brands fa-discord text-2xl"></i>
+                        </a>
+                        
+                        <!-- WhatsApp -->
+                        <a href="https://wa.link/anjgnu" target="_blank" class="text-brand-blue/50 hover:text-[#25D366] hover:scale-125 transition-all duration-300" title="WhatsApp">
+                            <i class="fa-brands fa-whatsapp text-2xl"></i>
+                        </a>
+
+                        <!-- TikTok -->
+                        <a href="https://www.tiktok.com/@lost_soul_zzz" target="_blank" class="text-brand-blue/50 hover:text-[#FE2C55] hover:scale-125 transition-all duration-300" title="TikTok">
+                            <i class="fa-brands fa-tiktok text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+</footer>
+
+<!-- SCRIPTS: FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, orderBy, serverTimestamp, updateDoc, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBiZY4tIZGstiZhw_jiuhvNZ8ZtGCjQb5w",
+        authDomain: "handmade-marry.firebaseapp.com",
+        projectId: "handmade-marry",
+        storageBucket: "handmade-marry.firebasestorage.app",
+        messagingSenderId: "30193148874",
+        appId: "1:30193148874:web:04c1b35f3e54ed43ee2533"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    // Firebase Functions
+    window.authFunctions = {
+        loginWithGoogle: () => signInWithPopup(auth, provider).then(async (res) => { await saveUser(res.user); window.toggleAuthModal(); }),
+        logout: () => signOut(auth).then(() => window.toggleUserModal()),
+        handleEmailAuth: (e) => {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value, pass = document.getElementById('auth-pass').value;
+            const isReg = document.getElementById('auth-title').innerText.includes('Cont');
+            const action = isReg ? createUserWithEmailAndPassword(auth, email, pass) : signInWithEmailAndPassword(auth, email, pass);
+            action.then(async (res) => { await saveUser(res.user); window.toggleAuthModal(); }).catch(err => alert(err.message));
+        }
+    };
+
+    async function saveUser(user) {
+        await setDoc(doc(db, "users", user.uid), { uid: user.uid, email: user.email, displayName: user.displayName || "Client", photoURL: user.photoURL || "" }, { merge: true });
+    }
+
+onAuthStateChanged(auth, async (user) => {
+        window.currentUser = user;
+        const btns = document.querySelectorAll('.login-trigger-text');
+        const writeSec = document.getElementById('writeReviewSection');
+        const loginMsg = document.getElementById('loginToPostMsg');
+        const postMsg = document.getElementById('alreadyPostedMsg');
+
+        if (user) {
+            // --- UPDATED BUTTON LOGIC ---
+            btns.forEach(btn => { 
+                const span = btn.querySelector('span');
+                if(span) span.innerText = "CONTUL MEU"; // Keep icon, change text
+                else btn.innerText = "CONTUL MEU"; // Fallback for old buttons
+                
+                btn.classList.add('text-brand-ice');
+                btn.classList.add('border-brand-ice/50');
+            });
+
+            document.getElementById('user-img').src = user.photoURL || "https://i.pravatar.cc/150";
+            document.getElementById('user-name').innerText = user.displayName || "Client MC";
+            document.getElementById('user-email').innerText = user.email;
+            
+            loginMsg.classList.add('hidden');
+            const d = await getDoc(doc(db, "reviews", user.uid));
+            if(d.exists()) { postMsg.classList.remove('hidden'); writeSec.classList.add('hidden'); }
+            else { writeSec.classList.remove('hidden'); }
+        } else {
+            // --- UPDATED BUTTON LOGIC ---
+            btns.forEach(btn => { 
+                const span = btn.querySelector('span');
+                if(span) span.innerText = "LOG IN"; 
+                else btn.innerText = "LOG IN";
+
+                btn.classList.remove('text-brand-ice');
+                btn.classList.remove('border-brand-ice/50');
+            });
+            
+            loginMsg.classList.remove('hidden'); 
+            writeSec.classList.add('hidden');
+        }
+        loadReviews();
+    });
+
+async function loadReviews() {
+    const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"));
+    const snap = await getDocs(q);
+    const list = document.getElementById('reviewsList');
+    if(!list) return;
+    list.innerHTML = "";
+    
+    let stats = { total: 0, sum: 0, counts: {1:0, 2:0, 3:0, 4:0, 5:0} };
+
+    snap.forEach(d => {
+        const data = { id: d.id, ...d.data() };
+        stats.total++; 
+        stats.sum += data.rating; 
+        stats.counts[data.rating]++;
+        
+        const dateObj = data.createdAt?.toDate() || new Date();
+        const dateStr = dateObj.toLocaleDateString('ro-RO');
+        const timeStr = dateObj.toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' });
+
+        const votes = data.votes || {};
+        let likes = 0, dislikes = 0;
+        Object.values(votes).forEach(v => { if (v === 1) likes++; if (v === -1) dislikes++; });
+        const userVote = window.currentUser ? votes[window.currentUser.uid] : null;
+
+        // OWNER CHECK (Maria) & ADMIN CHECK (You for delete only)
+        const isOwner = data.email === 'hancimaria39@gmail.com';
+        const isAdmin = window.currentUser && (window.currentUser.email === 'nicaemmanuel433qe@gmail.com' || window.currentUser.email === 'hancimaria39@gmail.com');
+
+        const card = document.createElement('div');
+        card.className = "indigo-frame rounded-2xl p-6 mb-4 relative";
+        card.innerHTML = `
+            <div class="flex gap-4 items-start mb-4">
+                <img src="${data.photo || 'https://i.pravatar.cc/150'}" class="w-12 h-12 rounded-full border border-brand-magenta/30">
+                <div class="flex-1">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-brand-ice flex items-center gap-2">
+                            ${data.name} 
+                            ${isOwner ? '<span class="text-[8px] bg-brand-magenta text-white px-2 py-0.5 rounded-full uppercase tracking-tighter">Owner</span>' : ''}
+                        </h4>
+                        ${isAdmin ? `<button onclick="deleteReview('${data.id}')" class="text-red-500/30 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash-can text-xs"></i></button>` : ''}
+                    </div>
+                    <!-- STELE SUB NUME -->
+                    <div class="text-brand-magenta text-[10px] tracking-tighter mt-0.5">
+                        ${'★'.repeat(data.rating)}${'☆'.repeat(5-data.rating)}
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-brand-softpink/90 text-sm leading-relaxed mb-6 pl-1">"${data.text}"</p>
+
+            <div class="flex flex-wrap items-end justify-between gap-4 pt-4 border-t border-white/5">
+                <div class="text-[9px] text-white/20 italic leading-tight">
+                    helpful review?<br>
+                    sent ${dateStr} at ${timeStr}
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button onclick="voteReview('${data.id}', 1)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[10px] hover:bg-brand-magenta/20 transition-all ${userVote === 1 ? 'border-brand-magenta text-brand-magenta bg-brand-magenta/10' : ''}">
+                        <i class="fa-solid fa-thumbs-up"></i> <span>${likes}</span>
+                    </button>
+                    <button onclick="voteReview('${data.id}', -1)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[10px] hover:bg-red-500/20 transition-all ${userVote === -1 ? 'border-red-500 text-red-500 bg-red-500/10' : ''}">
+                        <i class="fa-solid fa-thumbs-down"></i> <span>${dislikes}</span>
+                    </button>
+                    <button onclick="toggleComments('${data.id}')" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-brand-blue/10 border border-brand-blue/20 text-[10px] text-brand-blue hover:bg-brand-blue hover:text-white transition-all">
+                        <i class="fa-solid fa-comment-dots"></i> Răspunsuri
+                    </button>
+                </div>
+            </div>
+
+            <div id="comment-sec-${data.id}" class="hidden mt-6 pt-6 border-t border-white/5">
+                <div id="comment-list-${data.id}" class="space-y-4 mb-4"></div>
+                ${window.currentUser ? `
+                    <div class="flex gap-2">
+                        <input id="input-${data.id}" type="text" class="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-[11px] focus:border-brand-magenta" placeholder="Scrie un răspuns...">
+                        <button onclick="postComment('${data.id}')" class="w-10 h-10 rounded-full bg-brand-magenta flex items-center justify-center text-white"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+        list.appendChild(card);
+    });
+
+    updateSummaryUI(stats);
+}
+
+    document.getElementById('submitReview').onclick = async () => {
+        const text = document.getElementById('revText').value.trim();
+        if(!window.selectedRating) return alert("Alege stelele!");
+        if(text.length < 5) return alert("Scrie o recenzie!");
+        await setDoc(doc(db, "reviews", auth.currentUser.uid), { uid: auth.currentUser.uid, name: auth.currentUser.displayName, photo: auth.currentUser.photoURL, rating: window.selectedRating, text, createdAt: serverTimestamp() });
+        location.reload();
+    };
+    document.getElementById('authForm').addEventListener('submit', window.authFunctions.handleEmailAuth);
+
+
+
+
+// --- VOTARE (LIKE/DISLIKE) ---
+window.voteReview = async (reviewId, type) => {
+    if (!window.currentUser) return toggleAuthModal();
+    const ref = doc(db, "reviews", reviewId);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) return;
+
+    let votes = snap.data().votes || {};
+    if (votes[window.currentUser.uid] === type) {
+        delete votes[window.currentUser.uid]; // Scoate votul dacă apasă iar
+    } else {
+        votes[window.currentUser.uid] = type;
+    }
+    await updateDoc(ref, { votes });
+    loadReviews(); // Refresh instant
+};
+
+// --- AFISARE COMENTARII ---
+window.toggleComments = async (reviewId) => {
+    const sec = document.getElementById(`comment-sec-${reviewId}`);
+    const list = document.getElementById(`comment-list-${reviewId}`);
+    sec.classList.toggle('hidden');
+    
+    if (!sec.classList.contains('hidden')) {
+        const q = query(collection(db, `reviews/${reviewId}/comments`), orderBy("createdAt", "asc"));
+        const snap = await getDocs(q);
+        list.innerHTML = snap.empty ? '<p class="text-[10px] opacity-30 italic text-center">Niciun răspuns momentan.</p>' : '';
+        snap.forEach(docSnap => {
+            const c = docSnap.data();
+// În interiorul window.toggleComments, la list.innerHTML += ...
+const isCommentOwner = c.email === 'hancimaria39@gmail.com';
+list.innerHTML += `
+    <div class="flex gap-3 items-start bg-white/5 p-3 rounded-xl border border-white/5">
+        <img src="${c.photo}" class="w-6 h-6 rounded-full">
+        <div class="flex-1">
+            <p class="text-[10px] font-bold text-brand-ice">
+                ${c.name} 
+                ${isCommentOwner ? '<span class="text-[7px] bg-brand-magenta text-white px-1.5 py-0.5 rounded-full uppercase ml-1">Owner</span>' : ''}
+            </p>
+            <p class="text-[11px] text-white/70">${c.text}</p>
+        </div>
+    </div>
+`;
+        });
+    }
+};
+
+// --- POSTARE COMENTARIU ---
+window.postComment = async (reviewId) => {
+    const input = document.getElementById(`input-${reviewId}`);
+    const text = input.value.trim();
+    if (!text) return;
+
+    await addDoc(collection(db, `reviews/${reviewId}/comments`), {
+        uid: window.currentUser.uid,
+        name: window.currentUser.displayName,
+        photo: window.currentUser.photoURL,
+        email: window.currentUser.email,
+        text: text,
+        createdAt: serverTimestamp()
+    });
+    input.value = "";
+    window.toggleComments(reviewId); // Refresh comments list
+};
+
+// --- STERGERE RECENZIE ---
+window.deleteReview = async (id) => {
+    if (confirm("Sigur vrei să ștergi această recenzie?")) {
+        await deleteDoc(doc(db, "reviews", id));
+        loadReviews();
+    }
+};
+
+
+
+function updateSummaryUI(stats) {
+    if (stats.total === 0) return;
+    
+    const avg = (stats.sum / stats.total).toFixed(1);
+    const avgScoreEl = document.getElementById('avgScore');
+    const avgStarsEl = document.getElementById('avgStars');
+    const totalCountEl = document.getElementById('totalCount');
+
+    if(avgScoreEl) avgScoreEl.innerText = avg;
+    if(avgStarsEl) avgStarsEl.innerText = '★'.repeat(Math.round(avg)) + '☆'.repeat(5 - Math.round(avg));
+    if(totalCountEl) totalCountEl.innerText = stats.total;
+
+    for (let i = 1; i <= 5; i++) {
+        const p = ((stats.counts[i] / stats.total) * 100).toFixed(0);
+        const bar = document.getElementById(`bar${i}`);
+        const perc = document.getElementById(`perc${i}`);
+        if(bar) bar.style.width = p + "%";
+        if(perc) perc.innerText = p + "%";
+    }
+}
+</script>
+
+<!-- SCRIPTS: UI -->
+<script>
+    window.toggleMenu = function() {
+        document.getElementById('mobileMenu').classList.toggle('active');
+        document.body.style.overflow = document.getElementById('mobileMenu').classList.contains('active') ? 'hidden' : 'auto';
+    };
+    window.toggleAuthModal = function() { document.getElementById('authModal').classList.toggle('hidden'); };
+    window.toggleUserModal = function() { document.getElementById('userModal').classList.toggle('hidden'); };
+    window.handleAccountClick = function() { window.currentUser ? window.toggleUserModal() : window.toggleAuthModal(); };
+    window.toggleAuthMode = function() {
+        const t = document.getElementById('auth-title'), b = document.getElementById('auth-toggle-btn');
+        t.innerText = t.innerText === 'Autentificare' ? 'Cont Nou' : 'Autentificare';
+        b.innerText = t.innerText === 'Autentificare' ? 'Creează Cont' : 'Am deja cont';
+    };
+
+    document.querySelectorAll('#starSelector i').forEach(s => {
+        s.onclick = () => {
+            window.selectedRating = parseInt(s.getAttribute('data-val'));
+            document.querySelectorAll('#starSelector i').forEach((x, i) => x.classList.toggle('active', i < window.selectedRating));
+        };
+    });
+
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('main-nav');
+        window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Colecții | MC Handmade</title>
+
+    <!-- Preload Logo -->
+    <link rel="preload" as="image" href="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/HM%20MC%2F58e030c9-f51d-4b5f-abb2-8b88ea0f9507.png?alt=media&token=abbedc81-126b-44a2-b492-66eac45a447d">
+    <link rel="icon" type="image/jpeg" href="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/HM%20MC%2F7.png?alt=media&token=9c293a04-1061-4429-952c-fcff87838896" />
+
+<!-- Preload -->
+    <link rel="preload" as="image" href="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/botezuri.png?alt=media&token=952e6adf-9bf6-4ada-ac2f-c9de0cb19b3a">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@100;200;300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.2.1/compressor.min.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            softpink: "#FAD0E6",
+                            magenta: "#E467DA",
+                            ice: "#b8f4ff",
+                            dark: "#130925",
+                            blue: "#718ce5",
+                            alabaster: "#FDF2F5"
+                        },
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', "serif"],
+                        sans: ['"Montserrat"', "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Custom CSS -->
+    <style type="text/css">
+        :root { --soft-pink: #FAD0E6; --magenta: #E467DA; --dark: #130925; --ice: #b8f4ff; --blue: #718ce5; }
+        
+        html, body { 
+            width: 100%; max-width: 100vw; overflow-x: hidden; margin: 0; padding: 0; 
+            background-color: var(--dark); color: var(--soft-pink); font-family: 'Montserrat', sans-serif; 
+        }
+        
+        /* Background Gradient */
+        body { background: radial-gradient(circle at center, #2E1065 0%, #0D071A 100%); min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* Nav Styles */
+        nav { background: radial-gradient(circle at center, #2E1065 0%, #0D071A 100%); box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: padding 0.5s ease; width: 100%; }
+        nav.scrolled { padding-top: 15px !important; padding-bottom: 15px !important; }
+
+        .nav-link-desktop { position: relative; color: var(--soft-pink); text-decoration: none; padding-bottom: 5px; transition: color 0.3s ease; }
+        .nav-link-desktop::after { content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 1px; bottom: 0; left: 0; background-color: var(--ice); transform-origin: bottom right; transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1); }
+        .nav-link-desktop:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+        .nav-link-desktop:hover { color: var(--ice); text-shadow: 0 0 15px rgba(184, 244, 255, 0.4); }
+
+        /* Mobile Menu */
+        .mobile-menu { position: fixed; inset: 0; background: var(--dark); z-index: 100; transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .mobile-menu.active { transform: translateX(0); }
+        .mobile-item { display: flex; align-items: center; justify-content: center; gap: 12px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 2rem; color: var(--soft-pink); transition: all 0.3s ease; margin: 0; line-height: 1; text-align: center; }
+        .mobile-item:hover { transform: scale(1.05); color: var(--magenta); }
+        
+        /* Hamburger */
+        .hamburger { width: 30px; height: 20px; position: relative; cursor: pointer; z-index: 110; }
+        .hamburger span { display: block; position: absolute; height: 2px; width: 100%; background: var(--soft-pink); border-radius: 9px; left: 0; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+
+        /* UI Elements */
+        .indigo-frame { position: relative; padding: 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(113, 140, 229, 0.2); transition: all 0.4s ease; height: 100%; display: flex; flex-direction: column; }
+        .indigo-frame:hover { border-color: var(--ice); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        
+        .img-container { overflow: hidden; position: relative; border-radius: 2px; width: 100%; flex-grow: 1; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+        
+        /* Glows */
+        .glow-soft { position: absolute; width: 600px; height: 600px; filter: blur(150px); pointer-events: none; z-index: 0; opacity: 0.15; }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
+
+
+/* Elimină marginile defecte din imaginile PNG (barele verticale) */
+.text-logo-crop {
+    clip-path: inset(0 10% 0 10%); /* Taie 10% din stânga și dreapta */
+    transform: scale(1.25); /* Mărește logo-ul pentru a compensa tăierea */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 0.5s ease;
+}
+
+.group:hover .text-logo-crop {
+    transform: scale(1.35); /* Efect de mărire la hover */
+    filter: drop-shadow(0 0 15px rgba(228, 103, 218, 0.6));
+}
+
+/* Asigurăm că nu există borduri reziduale */
+.indigo-frame .text-center {
+    border: none !important;
+}
+
+
+
+/* Stiluri pentru Cardul de Produs */
+.product-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(113, 140, 229, 0.1); transition: all 0.5s ease; }
+.product-card:hover { border-color: var(--ice); transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+.img-zoom { transition: transform 1.2s ease; }
+.product-card:hover .img-zoom { transform: scale(1.08); }
+
+/* Buton Comandă WhatsApp */
+.btn-wa { background: linear-gradient(135deg, #E467DA 0%, #718ce5 100%); color: white; transition: all 0.3s ease; }
+.btn-wa:hover { filter: brightness(1.1); transform: scale(1.02); }
+
+/* Admin Panel Styling */
+.admin-panel { background: rgba(19, 9, 37, 0.95); border: 1px dashed var(--ice); }
+
+
+/* Product UI */
+.product-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(113, 140, 229, 0.1); transition: all 0.4s ease; position: relative; }
+.product-card:hover { border-color: var(--ice); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+.img-zoom { transition: transform 1.2s ease; }
+.product-card:hover .img-zoom { transform: scale(1.1); }
+
+/* Admin Panel */
+.admin-panel { background: rgba(19, 9, 37, 0.8); border: 1px dashed var(--ice); backdrop-filter: blur(10px); }
+
+/* Luxury Button */
+.btn-wa { background: linear-gradient(135deg, #E467DA 0%, #718ce5 100%); color: white; transition: 0.3s; }
+.btn-wa:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--magenta);
+    border-radius: 10px;
+}
+
+
+
+html, body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden; /* This prevents the side-scrolling */
+    position: relative;
+}
+
+/* Ensure the mobile menu doesn't create extra width */
+.mobile-menu {
+    width: 100vw;
+    overflow-x: hidden;
+}
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="fixed w-full z-50 px-6 md:px-10 py-6 transition-all duration-500 flex items-center justify-between" id="main-nav">
+    <div class="w-32 md:w-44 flex-shrink-0">
+        <a href="index.html">
+            <img src="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/botezuri.png?alt=media&token=952e6adf-9bf6-4ada-ac2f-c9de0cb19b3a" class="h-12 w-auto object-contain hover:opacity-80 transition-opacity" alt="Logo" />
+        </a>
+    </div>
+    
+    <div class="hidden md:flex flex-1 justify-center items-center gap-12 text-[10px] uppercase tracking-[0.2em] font-medium">
+        <a href="index.html" class="nav-link-desktop">Acasă</a>
+        <a href="index.html#philosophy" class="nav-link-desktop">Biografie</a>
+        <a href="collections.html" class="nav-link-desktop text-brand-ice">Colecții</a>
+        <a href="index.html#tombola" class="nav-link-desktop text-brand-blue">Tombolă</a>
+        <a href="index.html#bespoke" class="nav-link-desktop text-brand-magenta">Personalizare</a>
+    </div>
+
+    <div class="w-32 md:w-44 flex justify-end items-center gap-6 flex-shrink-0">
+        <button onclick="handleAccountClick()" class="login-trigger-text hidden md:flex items-center gap-2 text-[9px] font-bold tracking-[0.2em] uppercase text-brand-ice/80 hover:text-white transition-colors group">
+            <i class="fa-regular fa-user text-xs group-hover:text-brand-magenta transition-colors"></i>
+            <span>Log In</span>
+        </button>
+        <div class="hamburger md:hidden group cursor-pointer" onclick="toggleMenu()">
+            <span class="group-hover:bg-brand-magenta transition-colors"></span>
+            <span class="group-hover:bg-brand-magenta transition-colors"></span>
+            <span class="group-hover:bg-brand-magenta transition-colors"></span>
+        </div>
+    </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <button onclick="toggleMenu()" class="absolute top-6 right-6 p-4 text-brand-softpink hover:text-brand-magenta hover:rotate-90 transition-all duration-500 z-50">
+        <i class="fa-solid fa-xmark text-3xl"></i>
+    </button>
+    <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+    <div class="mobile-menu-container w-full h-full flex flex-col justify-between pt-20 pb-10">
+        <div class="flex flex-col gap-5 items-center justify-center flex-grow">
+            <a href="index.html" class="mobile-item" onclick="toggleMenu()"><i class="fa-solid fa-house-chimney"></i><span>Acasă</span></a>
+            <a href="collections.html" class="mobile-item" onclick="toggleMenu()"><i class="fa-solid fa-gem"></i><span>Colecții</span></a>
+            <a href="index.html#tombola" class="mobile-item" onclick="toggleMenu()"><i class="fa-solid fa-ticket text-brand-blue"></i><span class="text-brand-blue">Tombolă</span></a>
+        </div>
+        <div class="flex flex-col items-center gap-6 mt-2">
+            <button onclick="handleAccountClick(); toggleMenu()" class="login-trigger-text flex items-center gap-3 px-10 py-3 border border-brand-ice/20 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-brand-ice hover:bg-brand-ice/10 transition-all">
+                <i class="fa-regular fa-user"></i>
+                <span>Log In</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<main class="flex-grow pt-32 pb-20 px-6 max-w-7xl mx-auto w-full relative">
+    <!-- Background Glow -->
+    <div class="glow-soft" style="background: var(--magenta); top: 100px; left: 50%; transform: translateX(-50%); opacity: 0.1;"></div>
+
+    <!-- Header -->
+    <div class="text-center mb-16 relative z-10" data-reveal="up">
+        <!-- Collection Logo -->
+        <img src="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/HM%20MC%2Ftexts%2Fbotezuri.png?alt=media&token=6387fec3-ccbd-40a3-90c0-d52a9f59aa7d" 
+             class="text-logo-crop h-20 mx-auto mb-6" alt="Mărturii Botez">
+        <div class="h-[1px] w-24 bg-gradient-to-r from-transparent via-brand-magenta to-transparent mx-auto"></div>
+    </div>
+
+    <!-- ADMIN UPLOAD PANEL (Only shows for you) -->
+    <div id="adminPanel" class="hidden admin-panel p-8 rounded-sm mb-16 text-center relative z-20">
+        <h3 class="font-serif italic text-2xl text-brand-ice mb-6">Manager Colecție (Admin)</h3>
+        <div class="flex flex-col md:flex-row gap-4 justify-center items-center font-sans">
+            <input type="file" id="fileInput" class="hidden" accept="image/*">
+            <button onclick="document.getElementById('fileInput').click()" class="border border-brand-ice/30 px-6 py-2 text-[10px] uppercase tracking-widest hover:bg-brand-ice/10 text-brand-ice">1. Alege Poză</button>
+            <input type="text" id="prodName" placeholder="Nume Produs" class="bg-white/5 border border-white/10 px-4 py-2 text-xs w-64 outline-none text-brand-ice">
+            <input type="text" id="prodPrice" placeholder="Preț (ex: 25 RON)" class="bg-white/5 border border-white/10 px-4 py-2 text-xs w-32 outline-none text-brand-ice">
+            <button id="uploadBtn" class="bg-brand-magenta text-white px-8 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-brand-blue transition-all">2. Încarcă</button>
+        </div>
+
+
+<!-- Preview wrapper (ascuns default) -->
+<div id="previewWrapper" class="hidden mb-6 flex flex-col items-center">
+    <div class="relative w-32 h-40 border border-brand-ice/20 p-1 bg-black/20">
+        <img id="imagePreview" src="" class="w-full h-full object-cover">
+        <button onclick="removeSelectedFile()" class="absolute -top-2 -right-2 bg-red-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-xl hover:bg-red-500 transition-colors">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <p class="text-[9px] text-brand-ice/40 mt-2 uppercase tracking-widest">Imagine selectată</p>
+</div>
+
+
+        <div id="status" class="mt-4 text-[10px] text-brand-blue uppercase tracking-widest"></div>
+    </div>
+
+    <!-- PRODUCTS GRID -->
+    <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 relative z-10">
+        <!-- Products load here -->
+    </div>
+</main>
+
+<!-- PRODUCT LIGHTBOX COMPLET ACTUALIZAT -->
+<div id="productLightbox" class="fixed inset-0 z-[200] hidden flex items-center justify-center px-4 py-6">
+    <!-- Fundal întunecat cu Blur -->
+    <div class="absolute inset-0 bg-brand-dark/98 backdrop-blur-xl" onclick="closeLightbox()"></div>
+    
+    <!-- Cardul Modal: Compact, Scrollabil, Grilă 1 col (mobil) / 2 col (desktop) -->
+    <div class="relative bg-[#1a0f2e] border border-brand-blue/20 max-w-5xl w-full max-h-[92vh] overflow-y-auto grid grid-cols-1 md:grid-cols-2 rounded-sm shadow-2xl custom-lightbox-scroll">
+        
+        <!-- SECȚIUNE IMAGINE: Umple lățimea pe mobil -->
+        <div class="relative w-full h-72 md:h-auto bg-black">
+            <!-- Buton Închidere (X) - Mutat aici pentru contrast mai bun -->
+            <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white z-50 bg-black/60 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md border border-white/10 hover:bg-brand-magenta transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            
+            <img id="lbImg" src="" class="w-full h-full object-cover block" alt="Produs">
+        </div>
+
+        <!-- SECȚIUNE DETALII: Padding echilibrat -->
+        <div class="p-6 md:p-12 flex flex-col justify-start md:justify-center bg-[#1a0f2e]">
+            <h2 id="lbTitle" class="text-3xl md:text-5xl font-serif italic text-brand-ice mb-3 md:mb-5 italic leading-tight">Nume</h2>
+            <p id="lbPrice" class="text-2xl md:text-3xl text-brand-magenta font-light mb-8 md:mb-10 italic">-- RON</p>
+            
+            <!-- Descriere stilizată -->
+            <div class="space-y-4 mb-10 text-sm md:text-base text-brand-softpink/70 font-light leading-relaxed">
+                <p class="flex items-start gap-3">
+                    <span class="text-brand-magenta">•</span> 
+                    <span>Sculptat manual din ceară de soia 100% naturală.</span>
+                </p>
+                <p class="flex items-start gap-3">
+                    <span class="text-brand-magenta">•</span> 
+                    <span>Detalii botanice ultra-realiste realizate manual.</span>
+                </p>
+                <p class="flex items-start gap-3">
+                    <span class="text-brand-magenta">•</span> 
+                    <span>Un cadou deosebit care păstrează amintirea vie.</span>
+                </p>
+            </div>
+
+            <!-- Buton WhatsApp Personalizat -->
+            <a id="waBtn" href="https://api.whatsapp.com/send?phone=4917675891440" target="_blank" class="btn-wa py-4 md:py-5 px-8 text-[11px] font-bold uppercase tracking-[0.2em] rounded-full flex items-center justify-center gap-3 transition-all">
+                <i class="fa-brands fa-whatsapp text-xl"></i> Comandă pe WhatsApp
+            </a>
+            
+            <p class="text-[9px] text-center text-brand-ice/30 mt-6 uppercase tracking-widest">Transport rapid în toată România</p>
+        </div>
+    </div>
+</div>
+<!-- ============================================== -->
+<!-- END MAIN CONTENT -->
+<!-- ============================================== -->
+
+
+<div id="deleteModal" class="fixed inset-0 z-[250] hidden flex items-center justify-center px-4">
+    <div class="absolute inset-0 bg-brand-dark/95 backdrop-blur-md" onclick="closeDeleteModal()"></div>
+    <div class="relative bg-[#1a0f2e] border border-red-500/30 p-8 w-full max-w-sm rounded-sm text-center shadow-2xl">
+        <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fa-solid fa-trash-can text-red-500 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-serif italic text-brand-ice mb-2">Ștergi acest produs?</h3>
+        <p class="text-[10px] text-brand-softpink/50 uppercase tracking-widest mb-10 leading-loose">Această acțiune este permanentă și nu poate fi anulată.</p>
+        <div class="flex gap-4">
+            <button onclick="closeDeleteModal()" class="flex-1 border border-white/10 py-3 text-[9px] font-bold uppercase tracking-widest hover:bg-white/5 text-brand-ice">Anulează</button>
+            <button id="confirmDeleteBtn" class="flex-1 bg-red-600 py-3 text-[9px] font-bold uppercase tracking-widest hover:bg-red-500 transition-all text-white">Confirmă</button>
+        </div>
+    </div>
+</div>
+
+<!-- AUTH MODALS -->
+<div id="authModal" class="fixed inset-0 z-[120] hidden flex items-center justify-center px-4">
+    <div class="absolute inset-0 bg-brand-dark/90 backdrop-blur-md" onclick="toggleAuthModal()"></div>
+    <div class="relative bg-[#1a0f2e] border border-brand-blue/20 p-8 md:p-12 w-full max-w-md rounded-sm shadow-2xl">
+        <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-brand-blue/50 hover:text-brand-ice"><i class="fa-solid fa-xmark text-2xl"></i></button>
+        <h2 id="auth-title" class="text-3xl font-serif text-brand-ice mb-8 text-center italic">Autentificare</h2>
+        <form id="authForm" class="space-y-6">
+            <input type="email" id="auth-email" placeholder="Email" required class="w-full bg-brand-dark/50 border border-brand-blue/10 px-4 py-3 text-brand-ice outline-none">
+            <input type="password" id="auth-pass" placeholder="Parolă" required class="w-full bg-brand-dark/50 border border-brand-blue/10 px-4 py-3 text-brand-ice outline-none">
+            <button type="submit" class="w-full bg-brand-magenta py-4 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-blue transition-all">Continuă</button>
+        </form>
+        <div class="relative my-8 text-center"><span class="absolute inset-0 flex items-center"><span class="w-full border-t border-brand-blue/10"></span></span><span class="relative bg-[#1a0f2e] px-4 text-[9px] uppercase tracking-widest text-brand-blue/30">sau</span></div>
+        <button onclick="window.authFunctions.loginWithGoogle()" class="w-full border border-brand-blue/20 py-4 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-blue/10 transition-all flex items-center justify-center gap-3 text-brand-ice"><i class="fa-brands fa-google"></i> Intră cu Google</button>
+        <p class="mt-8 text-center text-[10px] tracking-widest text-brand-blue/40 uppercase">Nu ai cont? <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-brand-ice border-b border-brand-ice/20">Creează Cont</button></p>
+    </div>
+</div>
+
+<div id="userModal" class="fixed inset-0 z-[130] hidden flex items-center justify-center px-4">
+    <div class="absolute inset-0 bg-brand-dark/95 backdrop-blur-xl" onclick="toggleUserModal()"></div>
+    <div class="relative bg-[#1a0f2e] border border-brand-blue/20 p-10 w-full max-w-sm rounded-lg shadow-2xl text-center">
+        <img id="user-img" src="" class="w-24 h-24 mx-auto mb-6 rounded-full border-2 border-brand-magenta object-cover shadow-2xl">
+        <h3 id="user-name" class="text-brand-ice font-serif text-2xl mb-1 italic">Utilizator</h3>
+        <p id="user-email" class="text-brand-blue/50 text-[10px] uppercase tracking-widest mb-8">email@exemplu.com</p>
+        <button onclick="window.authFunctions.logout()" class="w-full border border-red-500/30 text-red-400 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all">Log Out</button>
+    </div>
+</div>
+
+<footer class="bg-[#0D071A] pt-24 pb-12 px-6 md:px-10 border-t border-brand-blue/10 relative overflow-hidden">
+    <!-- Fundal subtil cu reflexii -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-96 bg-brand-purple/5 blur-[120px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto text-center">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 items-start">
+            
+<!-- 1. BRAND COLUMN - Centered -->
+            <div class="flex flex-col items-center space-y-8 order-1">
+                <img 
+                    src="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/botezuri.png?alt=media&token=952e6adf-9bf6-4ada-ac2f-c9de0cb19b3a" 
+                    alt="MC Logo" 
+                    class="w-32 md:w-40 opacity-90 hover:scale-105 transition-transform duration-500"
+                />
+                <p class="text-brand-blue/50 text-[11px] md:text-xs max-w-xs font-light leading-loose uppercase tracking-[0.2em]">
+                    MC Handmade Marry. <br>
+                    Artă botanică românească. Flori care nu se ofilesc niciodată, sculptate manual pentru momente de neuitat.
+                </p>
+                <div class="flex justify-center space-x-5">
+                    <a href="https://www.instagram.com/handmade.candles.mary" target="_blank" class="w-10 h-10 border border-brand-blue/20 rounded-full flex items-center justify-center text-brand-blue hover:bg-brand-magenta hover:border-transparent hover:text-white transition-all duration-300">
+                        <i class="fa-brands fa-instagram text-lg"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@handmade.candles.soap" target="_blank" class="w-10 h-10 border border-brand-blue/20 rounded-full flex items-center justify-center text-brand-blue hover:bg-brand-magenta hover:border-transparent hover:text-white transition-all duration-300">
+                        <i class="fa-brands fa-tiktok text-lg"></i>
+                    </a>
+                    <a href="https://api.whatsapp.com/send?phone=4917675891440" target="_blank" class="w-10 h-10 border border-brand-blue/20 rounded-full flex items-center justify-center text-brand-blue hover:bg-brand-magenta hover:border-transparent hover:text-white transition-all duration-300">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. NAVIGATION COLUMN - Centered -->
+            <div class="flex flex-col items-center order-2 md:order-2">
+                <h5 class="text-brand-ice text-[10px] uppercase tracking-[0.4em] mb-8 font-bold">Navigare</h5>
+                <ul class="text-brand-blue/60 text-[10px] space-y-5 font-medium tracking-[0.2em]">
+                    <li><a href="#home" class="hover:text-brand-magenta transition-colors">ACASĂ</a></li>
+                    <li><a href="#philosophy" class="hover:text-brand-magenta transition-colors">DESPRE BRAND</a></li>
+                    <li><a href="#collection" class="hover:text-brand-magenta transition-colors">GALERIE PRODUSE</a></li>
+                    <li><a href="#bespoke" class="hover:text-brand-magenta transition-colors">COMENZI SPECIALE</a></li>
+                </ul>
+            </div>
+
+<!-- 3. DEVELOPER COLUMN - Centered with Tri-Contact -->
+            <div class="flex flex-col items-center order-3 md:order-3">
+                <div class="relative group">
+                    <!-- Glow Effect -->
+                    <div class="absolute inset-0 bg-brand-ice/20 blur-2xl rounded-full group-hover:bg-brand-magenta/30 transition-all duration-700"></div>
+                    
+                    <!-- Creator Avatar -->
+                    <a href="https://www.tiktok.com/@lost_soul_zzz" target="_blank" class="relative block w-24 h-24 mb-6 rounded-full border-2 border-brand-ice/30 p-1 overflow-hidden transition-transform duration-500 group-hover:scale-110 group-hover:border-brand-magenta">
+                        <img 
+                            src="https://iili.io/f1ddIfe.png" 
+                            alt="Lost Soul" 
+                            class="w-full h-full object-cover rounded-full bg-[#0D071A]"
+                        />
+                    </a>
+                </div>
+                
+                <h6 class="text-brand-ice/80 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">Website realizat de</h6>
+                <p class="text-brand-magenta font-serif italic text-xl mb-4">Lost Soul / Nica Emmanuel</p>
+                
+                <!-- Contact Links Container -->
+                <div class="flex flex-col items-center gap-3">
+                    <span class="text-[9px] uppercase tracking-[0.4em] font-bold text-brand-blue/50">Contact Developer</span>
+                    
+                    <div class="flex items-center gap-6">
+                        <!-- Discord -->
+                        <a href="https://discord.com/users/1063511180376817755" target="_blank" class="text-brand-blue/50 hover:text-[#5865F2] hover:scale-125 transition-all duration-300" title="Discord">
+                            <i class="fa-brands fa-discord text-2xl"></i>
+                        </a>
+                        
+                        <!-- WhatsApp -->
+                        <a href="https://wa.link/anjgnu" target="_blank" class="text-brand-blue/50 hover:text-[#25D366] hover:scale-125 transition-all duration-300" title="WhatsApp">
+                            <i class="fa-brands fa-whatsapp text-2xl"></i>
+                        </a>
+
+                        <!-- TikTok -->
+                        <a href="https://www.tiktok.com/@lost_soul_zzz" target="_blank" class="text-brand-blue/50 hover:text-[#FE2C55] hover:scale-125 transition-all duration-300" title="TikTok">
+                            <i class="fa-brands fa-tiktok text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</footer>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+    const hmConfig = {
+        apiKey: "AIzaSyBiZY4tIZGstiZhw_jiuhvNZ8ZtGCjQb5w",
+        authDomain: "handmade-marry.firebaseapp.com",
+        projectId: "handmade-marry"
+    };
+
+    const ksdaConfig = {
+        apiKey: "AIzaSyDoH80kffNrzFAcyRqsTVdifs-whUhwH9A",
+        projectId: "ksda-7546f",
+        storageBucket: "ksda-7546f.firebasestorage.app"
+    };
+
+    const appHM = initializeApp(hmConfig);
+    const appKSDA = initializeApp(ksdaConfig, "ksdaStorageApp");
+
+    const auth = getAuth(appHM);
+    const db = getFirestore(appHM);
+    const storage = getStorage(appKSDA);
+
+    const COLLECTION_ID = "marturii"; 
+    const ADMIN_EMAILS = ["nicaemmanuel433qe@gmail.com", "hancimaria39@gmail.com"];
+
+    // --- LOGICA AUTH ---
+    window.authFunctions = {
+        loginWithGoogle: async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                await signInWithPopup(auth, provider);
+                document.getElementById('authModal').classList.add('hidden');
+            } catch (error) { alert("Eroare la logare!"); }
+        },
+        logout: async () => {
+            await signOut(auth);
+            location.reload();
+        }
+    };
+
+onAuthStateChanged(auth, (user) => {
+        window.currentUser = user; 
+        
+        // Selectăm toate textele din butoanele de login (desktop + mobil)
+        const loginTexts = document.querySelectorAll('.login-trigger-text span');
+
+        if (user) {
+            // Schimbăm textul butoanelor în "Contul meu"
+            loginTexts.forEach(el => el.innerText = "Contul meu");
+
+            document.getElementById('user-img').src = user.photoURL || "";
+            document.getElementById('user-name').innerText = user.displayName;
+            document.getElementById('user-email').innerText = user.email;
+
+            if (ADMIN_EMAILS.includes(user.email.toLowerCase())) {
+                document.getElementById('adminPanel').classList.remove('hidden');
+            }
+        } else {
+            // Dacă se deloghează, textul revine la "Log In"
+            loginTexts.forEach(el => el.innerText = "Log In");
+            document.getElementById('adminPanel').classList.add('hidden');
+        }
+    });
+
+    // --- PREVIEW IMAGINE ---
+    document.getElementById('fileInput').onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                document.getElementById('imagePreview').src = ev.target.result;
+                document.getElementById('previewWrapper').classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        }
+    };
+
+    window.removeSelectedFile = () => {
+        document.getElementById('fileInput').value = "";
+        document.getElementById('previewWrapper').classList.add('hidden');
+    };
+
+    // --- UPLOAD ---
+    document.getElementById('uploadBtn').onclick = async () => {
+        const file = document.getElementById('fileInput').files[0];
+        const title = document.getElementById('prodName').value;
+        const price = document.getElementById('prodPrice').value;
+        const status = document.getElementById('status');
+
+        if (!file || !title || !price) return alert("Completează tot!");
+
+        const btn = document.getElementById('uploadBtn');
+        btn.disabled = true;
+        status.innerText = "Se procesează...";
+
+        new Compressor(file, {
+            quality: 0.6,
+            success: async (result) => {
+                const sRef = ref(storage, `collections/${COLLECTION_ID}/${Date.now()}_prod`);
+                const uploadTask = uploadBytesResumable(sRef, result);
+
+                uploadTask.on('state_changed', 
+                    (snap) => { status.innerText = `Încărcare: ${Math.round((snap.bytesTransferred/snap.totalBytes)*100)}%`; },
+                    (err) => { alert("Eroare Storage! Verifică regulile."); btn.disabled = false; },
+                    async () => {
+                        const url = await getDownloadURL(uploadTask.snapshot.ref);
+                        await addDoc(collection(db, `products_${COLLECTION_ID}`), {
+                            name: title, price: price, img: url, createdAt: serverTimestamp()
+                        });
+                        location.reload();
+                    }
+                );
+            }
+        });
+    };
+
+    // --- AFIȘARE PRODUSE ---
+    onSnapshot(query(collection(db, `products_${COLLECTION_ID}`), orderBy("createdAt", "desc")), (snap) => {
+        const grid = document.getElementById('productsGrid');
+        grid.innerHTML = '';
+        snap.forEach(docSnap => {
+            const p = docSnap.data();
+            const isAdmin = window.currentUser && ADMIN_EMAILS.includes(window.currentUser.email.toLowerCase());
+            grid.innerHTML += `
+                <div class="product-card p-4 group cursor-pointer reveal-item" onclick="openLightbox('${docSnap.id}')">
+                    <div class="aspect-[4/5] overflow-hidden mb-6 relative">
+                        <img src="${p.img}" class="w-full h-full object-cover img-zoom">
+                        ${isAdmin ? `<button onclick="event.stopPropagation(); window.deleteProd('${docSnap.id}')" class="absolute top-4 right-4 bg-red-600 text-white p-2 text-xs z-30"><i class="fa-solid fa-trash"></i></button>` : ''}
+                    </div>
+                    <div class="text-center">
+                        <h3 class="font-serif italic text-2xl text-brand-ice">${p.name}</h3>
+                        <p class="text-brand-magenta mt-2">${p.price} RON</p>
+                    </div>
+                </div>
+            `;
+        });
+    });
+
+    // --- LIGHTBOX ---
+    window.openLightbox = async (id) => {
+        const docSnap = await getDoc(doc(db, `products_${COLLECTION_ID}`, id));
+        const p = docSnap.data();
+        document.getElementById('lbImg').src = p.img;
+        document.getElementById('lbTitle').innerText = p.name;
+        document.getElementById('lbPrice').innerText = `${p.price} RON`;
+        document.getElementById('waBtn').href = `https://api.whatsapp.com/send?phone=4917675891440&text=Bună! Sunt interesat de ${p.name}`;
+        document.getElementById('productLightbox').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeLightbox = () => {
+        document.getElementById('productLightbox').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    };
+
+    // --- DELETE ---
+    let toDelete = null;
+    window.deleteProd = (id) => {
+        toDelete = id;
+        document.getElementById('deleteModal').classList.remove('hidden');
+    };
+    window.closeDeleteModal = () => document.getElementById('deleteModal').classList.add('hidden');
+    document.getElementById('confirmDeleteBtn').onclick = async () => {
+        if(toDelete) await deleteDoc(doc(db, `products_${COLLECTION_ID}`, toDelete));
+        closeDeleteModal();
+    };
+
+</script>
+<!-- SCRIPTS: UI INTERACTIONS -->
+<script>
+    // Menu Toggles
+    window.toggleMenu = function() {
+        document.getElementById('mobileMenu').classList.toggle('active');
+        document.body.style.overflow = document.getElementById('mobileMenu').classList.contains('active') ? 'hidden' : 'auto';
+    };
+    window.toggleAuthModal = function() { document.getElementById('authModal').classList.toggle('hidden'); };
+    window.toggleUserModal = function() { document.getElementById('userModal').classList.toggle('hidden'); };
+    window.handleAccountClick = function() { window.currentUser ? window.toggleUserModal() : window.toggleAuthModal(); };
+    window.toggleAuthMode = function() {
+        const t = document.getElementById('auth-title'), b = document.getElementById('auth-toggle-btn');
+        t.innerText = t.innerText === 'Autentificare' ? 'Cont Nou' : 'Autentificare';
+        b.innerText = t.innerText === 'Autentificare' ? 'Creează Cont' : 'Am deja cont';
+    };
+
+    // Navbar Scroll
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('main-nav');
+        window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
+    });
+
+    // Animations
+    document.addEventListener("DOMContentLoaded", (event) => {
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.from("[data-reveal='up']", {
+            y: 50, opacity: 0, duration: 1.5, ease: "power3.out"
+        });
+
+        gsap.utils.toArray('.reveal-item').forEach((item, i) => {
+            gsap.from(item, {
+                y: 50, 
+                opacity: 0, 
+                duration: 1, 
+                delay: i * 0.1, // Stagger effect
+                ease: "power2.out",
+                scrollTrigger: { trigger: item, start: "top 90%" }
+            });
+        });
+    }); 
+</script>
+
+
+
+
+</body>
+</html>

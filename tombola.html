@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Colecții | MC Handmade</title>
+
+    <!-- Preload Logo -->
+    <link rel="preload" as="image" href="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/HM%20MC%2F58e030c9-f51d-4b5f-abb2-8b88ea0f9507.png?alt=media&token=abbedc81-126b-44a2-b492-66eac45a447d">
+<link rel="icon" type="image/jpeg" href="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/HM%20MC%2F7.png?alt=media&token=9c293a04-1061-4429-952c-fcff87838896" />
+
+<!-- Preload -->
+    <link rel="preload" as="image" href="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/botezuri.png?alt=media&token=952e6adf-9bf6-4ada-ac2f-c9de0cb19b3a">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@100;200;300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.2.1/compressor.min.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            softpink: "#FAD0E6",
+                            magenta: "#E467DA",
+                            ice: "#b8f4ff",
+                            dark: "#130925",
+                            blue: "#718ce5",
+                            alabaster: "#FDF2F5"
+                        },
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', "serif"],
+                        sans: ['"Montserrat"', "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Custom CSS -->
+    <style type="text/css">
+        :root { --soft-pink: #FAD0E6; --magenta: #E467DA; --dark: #130925; --ice: #b8f4ff; --blue: #718ce5; }
+        
+        html, body { 
+            width: 100%; max-width: 100vw; overflow-x: hidden; margin: 0; padding: 0; 
+            background-color: var(--dark); color: var(--soft-pink); font-family: 'Montserrat', sans-serif; 
+        }
+        
+        /* Background Gradient */
+        body { background: radial-gradient(circle at center, #2E1065 0%, #0D071A 100%); min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* Nav Styles */
+        nav { background: radial-gradient(circle at center, #2E1065 0%, #0D071A 100%); box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: padding 0.5s ease; width: 100%; }
+        nav.scrolled { padding-top: 15px !important; padding-bottom: 15px !important; }
+
+        .nav-link-desktop { position: relative; color: var(--soft-pink); text-decoration: none; padding-bottom: 5px; transition: color 0.3s ease; }
+        .nav-link-desktop::after { content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 1px; bottom: 0; left: 0; background-color: var(--ice); transform-origin: bottom right; transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1); }
+        .nav-link-desktop:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+        .nav-link-desktop:hover { color: var(--ice); text-shadow: 0 0 15px rgba(184, 244, 255, 0.4); }
+
+        /* Mobile Menu */
+        .mobile-menu { position: fixed; inset: 0; background: var(--dark); z-index: 100; transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .mobile-menu.active { transform: translateX(0); }
+        .mobile-item { display: flex; align-items: center; justify-content: center; gap: 12px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 2rem; color: var(--soft-pink); transition: all 0.3s ease; margin: 0; line-height: 1; text-align: center; }
+        .mobile-item:hover { transform: scale(1.05); color: var(--magenta); }
+        
+        /* Hamburger */
+        .hamburger { width: 30px; height: 20px; position: relative; cursor: pointer; z-index: 110; }
+        .hamburger span { display: block; position: absolute; height: 2px; width: 100%; background: var(--soft-pink); border-radius: 9px; left: 0; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+
+        /* UI Elements */
+        .indigo-frame { position: relative; padding: 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(113, 140, 229, 0.2); transition: all 0.4s ease; height: 100%; display: flex; flex-direction: column; }
+        .indigo-frame:hover { border-color: var(--ice); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        
+        .img-container { overflow: hidden; position: relative; border-radius: 2px; width: 100%; flex-grow: 1; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+        
+        /* Glows */
+        .glow-soft { position: absolute; width: 600px; height: 600px; filter: blur(150px); pointer-events: none; z-index: 0; opacity: 0.15; }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
+
+
+/* Elimină marginile defecte din imaginile PNG (barele verticale) */
+.text-logo-crop {
+    clip-path: inset(0 10% 0 10%); /* Taie 10% din stânga și dreapta */
+    transform: scale(1.25); /* Mărește logo-ul pentru a compensa tăierea */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 0.5s ease;
+}
+
+.group:hover .text-logo-crop {
+    transform: scale(1.35); /* Efect de mărire la hover */
+    filter: drop-shadow(0 0 15px rgba(228, 103, 218, 0.6));
+}
+
+/* Asigurăm că nu există borduri reziduale */
+.indigo-frame .text-center {
+    border: none !important;
+}
+
+
+
+/* Stiluri pentru Cardul de Produs */
+.product-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(113, 140, 229, 0.1); transition: all 0.5s ease; }
+.product-card:hover { border-color: var(--ice); transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+.img-zoom { transition: transform 1.2s ease; }
+.product-card:hover .img-zoom { transform: scale(1.08); }
+
+/* Buton Comandă WhatsApp */
+.btn-wa { background: linear-gradient(135deg, #E467DA 0%, #718ce5 100%); color: white; transition: all 0.3s ease; }
+.btn-wa:hover { filter: brightness(1.1); transform: scale(1.02); }
+
+/* Admin Panel Styling */
+.admin-panel { background: rgba(19, 9, 37, 0.95); border: 1px dashed var(--ice); }
+
+
+/* Product UI */
+.product-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(113, 140, 229, 0.1); transition: all 0.4s ease; position: relative; }
+.product-card:hover { border-color: var(--ice); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+.img-zoom { transition: transform 1.2s ease; }
+.product-card:hover .img-zoom { transform: scale(1.1); }
+
+/* Admin Panel */
+.admin-panel { background: rgba(19, 9, 37, 0.8); border: 1px dashed var(--ice); backdrop-filter: blur(10px); }
+
+/* Luxury Button */
+.btn-wa { background: linear-gradient(135deg, #E467DA 0%, #718ce5 100%); color: white; transition: 0.3s; }
+.btn-wa:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--magenta);
+    border-radius: 10px;
+}
+
+
+
+html, body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden; /* This prevents the side-scrolling */
+    position: relative;
+}
+
+/* Ensure the mobile menu doesn't create extra width */
+.mobile-menu {
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+
+
+/* Fix Description Wrapping */
+#display-t-desc {
+    word-break: break-word;
+    white-space: pre-wrap;
+    max-width: 100%;
+}
+
+/* Update these inside your <style> tag */
+.slot-default { 
+    border: 1px solid rgba(113, 140, 229, 0.1); 
+    background: rgba(19, 9, 37, 0.4); 
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Adds the smooth fade effect */
+}
+
+.slot-highlight { 
+    border-color: #fff !important; 
+    box-shadow: 0 0 20px #fff;
+    z-index: 20;
+    transform: scale(1.15);
+}
+
+.slot-winner { 
+    border-color: #22c55e !important; 
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.slot-eliminated { 
+    border-color: #ef4444 !important; 
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.05);
+    filter: grayscale(0.5);
+    opacity: 0.5;
+}
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="fixed w-full z-50 px-6 md:px-10 py-6 transition-all duration-500 flex items-center justify-between" id="main-nav">
+    <div class="w-32 md:w-44 flex-shrink-0">
+        <a href="index.html">
+            <img src="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/botezuri.png?alt=media&token=952e6adf-9bf6-4ada-ac2f-c9de0cb19b3a" class="h-12 w-auto object-contain hover:opacity-80 transition-opacity" alt="Logo" />
+        </a>
+    </div>
+    
+    <div class="hidden md:flex flex-1 justify-center items-center gap-12 text-[10px] uppercase tracking-[0.2em] font-medium">
+        <a href="index.html" class="nav-link-desktop">Acasă</a>
+        <a href="index.html#philosophy" class="nav-link-desktop">Biografie</a>
+        <a href="collections.html" class="nav-link-desktop text-brand-ice">Colecții</a>
+        <a href="index.html#tombola" class="nav-link-desktop text-brand-blue">Tombolă</a>
+        <a href="index.html#bespoke" class="nav-link-desktop text-brand-magenta">Personalizare</a>
+    </div>
+
+    <div class="w-32 md:w-44 flex justify-end items-center gap-6 flex-shrink-0">
+        <button onclick="handleAccountClick()" class="login-trigger-text hidden md:flex items-center gap-2 text-[9px] font-bold tracking-[0.2em] uppercase text-brand-ice/80 hover:text-white transition-colors group">
+            <i class="fa-regular fa-user text-xs group-hover:text-brand-magenta transition-colors"></i>
+            <span>Log In</span>
+        </button>
+        <div class="hamburger md:hidden group cursor-pointer" onclick="toggleMenu()">
+            <span class="group-hover:bg-brand-magenta transition-colors"></span>
+            <span class="group-hover:bg-brand-magenta transition-colors"></span>
+            <span class="group-hover:bg-brand-magenta transition-colors"></span>
+        </div>
+    </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <button onclick="toggleMenu()" class="absolute top-6 right-6 p-4 text-brand-softpink hover:text-brand-magenta hover:rotate-90 transition-all duration-500 z-50">
+        <i class="fa-solid fa-xmark text-3xl"></i>
+    </button>
+    <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+    <div class="mobile-menu-container w-full h-full flex flex-col justify-between pt-20 pb-10">
+        <div class="flex flex-col gap-5 items-center justify-center flex-grow">
+            <a href="index.html" class="mobile-item" onclick="toggleMenu()"><i class="fa-solid fa-house-chimney"></i><span>Acasă</span></a>
+            <a href="collections.html" class="mobile-item" onclick="toggleMenu()"><i class="fa-solid fa-gem"></i><span>Colecții</span></a>
+            <a href="index.html#tombola" class="mobile-item" onclick="toggleMenu()"><i class="fa-solid fa-ticket text-brand-blue"></i><span class="text-brand-blue">Tombolă</span></a>
+        </div>
+        <div class="flex flex-col items-center gap-6 mt-2">
+            <button onclick="handleAccountClick(); toggleMenu()" class="login-trigger-text flex items-center gap-3 px-10 py-3 border border-brand-ice/20 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-brand-ice hover:bg-brand-ice/10 transition-all">
+                <i class="fa-regular fa-user"></i>
+                <span>Log In</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+</div>
+
+<main class="flex-grow pt-32 pb-20 px-6 max-w-7xl mx-auto w-full relative min-h-screen">
+    
+    <!-- MANAGER TOMBOLĂ (Admin Area) -->
+    <div id="admin-tombola-section" class="hidden mb-12 p-8 border border-dashed border-brand-ice/20 bg-brand-dark/40 backdrop-blur-md rounded-lg">
+        <h2 class="text-center font-serif italic text-2xl text-brand-ice mb-8">Manager Tombolă</h2>
+        
+        <!-- Creation Form (Hidden if active) -->
+        <form id="createTombolaForm" class="space-y-6">
+            <div class="flex flex-col md:flex-row gap-8 items-start">
+                <div class="w-full md:w-1/3">
+                    <div id="image-preview" class="w-full aspect-square border border-brand-blue/20 bg-black/20 flex items-center justify-center overflow-hidden">
+                        <span class="text-[10px] uppercase text-brand-blue/40">Fără imagine</span>
+                    </div>
+                    <input type="file" id="t-image" class="hidden" accept="image/*">
+                    <button type="button" onclick="document.getElementById('t-image').click()" class="w-full mt-2 border border-brand-blue/30 py-2 text-[9px] font-bold uppercase tracking-widest text-brand-ice hover:bg-brand-blue/10">1. Alege Poză</button>
+                </div>
+                <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="t-title" placeholder="Titlu Tombolă" class="bg-brand-dark border border-brand-blue/20 p-3 text-white text-xs">
+                    <input type="text" id="t-duration" placeholder="Durată (ex: 1 = 1 oră)" class="bg-brand-dark border border-brand-blue/20 p-3 text-white text-xs">
+                    <select id="t-spots" class="bg-brand-dark border border-brand-blue/20 p-3 text-white text-xs">
+                        <option value="10">10 Locuri</option><option value="25">25 Locuri</option><option value="50">50 Locuri</option>
+                    </select>
+                    <select id="t-winners" class="bg-brand-dark border border-brand-blue/20 p-3 text-white text-xs">
+                        <option value="1">1 Câștigător</option><option value="2">2 Câștigători</option><option value="3">3 Câștigători</option>
+                    </select>
+                    <textarea id="t-desc" placeholder="Descriere..." class="md:col-span-2 bg-brand-dark border border-brand-blue/20 p-3 text-white text-xs h-20"></textarea>
+                </div>
+            </div>
+<button type="submit" class="w-full bg-brand-magenta py-4 text-[10px] font-bold uppercase tracking-widest text-white">2. Lansează Tombola</button>
+<div id="t-status" class="text-center text-[10px] text-brand-magenta uppercase tracking-widest mt-4"></div>
+        </form>
+
+<div id="admin-active-controls" class="hidden text-center py-10 space-y-4">
+    <p class="text-brand-magenta text-xs uppercase tracking-[0.3em] mb-6">O tombolă este în curs de desfășurare</p>
+    <div class="flex flex-wrap justify-center gap-4">
+        <button onclick="endTombolaNow()" class="border border-green-500 text-green-500 px-8 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-green-500 hover:text-white transition-all">
+            Oprește și Extrage Câștigătorii
+        </button>
+        <button onclick="deleteCurrentRaffle()" class="border border-red-500 text-red-500 px-8 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all">
+            Șterge / Resetează Tombola
+        </button>
+    </div>
+</div>
+    </div>
+
+    <!-- AFIȘARE TOMBOLĂ -->
+    <div id="active-tombola-container" class="hidden">
+        <h3 class="text-center text-[10px] uppercase tracking-[0.5em] text-brand-ice/60 mb-8 italic">Locuri disponibile în tombolă</h3>
+
+        <!-- Prize Details (Now moved here) -->
+        <div class="max-w-4xl mx-auto mb-12 flex flex-col md:flex-row gap-8 items-center bg-black/40 p-6 border border-brand-blue/10 rounded-lg">
+            <img id="display-t-image" src="" class="w-40 h-40 object-cover border border-brand-blue/20">
+            <div class="flex-1 text-center md:text-left">
+                <div id="countdown" class="text-brand-magenta font-mono text-3xl mb-2">00:00:00</div>
+                <h1 id="display-t-title" class="font-serif italic text-3xl text-brand-ice mb-3"></h1>
+                <p id="display-t-desc" class="text-brand-blue/60 text-[11px] uppercase tracking-widest leading-relaxed"></p>
+            </div>
+        </div>
+
+        <!-- Grid -->
+        <div id="tombola-grid" class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-10 gap-3 max-w-4xl mx-auto"></div>
+    </div>
+
+
+<!-- Grid -->
+        <div id="tombola-grid" class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-10 gap-3 max-w-4xl mx-auto"></div>
+
+        <!-- NEW: Participation Details Trigger -->
+        <div class="text-center mt-12 pb-10">
+            <button onclick="toggleDetailsModal()" class="text-[9px] uppercase tracking-[0.4em] text-brand-ice/40 hover:text-brand-magenta transition-all border-b border-brand-ice/10 hover:border-brand-magenta pb-2">
+                <i class="fa-solid fa-circle-info mr-2"></i> Detalii pentru înscriere
+            </button>
+        </div>
+    </div> <!-- End of active-tombola-container -->
+
+    <!-- NEW: Participation Details Popup -->
+    <div id="detailsModal" class="fixed inset-0 z-[200] hidden flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-brand-dark/95 backdrop-blur-md" onclick="toggleDetailsModal()"></div>
+        <div class="relative bg-[#1a0f2e] border border-brand-blue/20 p-8 md:p-12 w-full max-w-lg rounded-sm shadow-2xl">
+             <button onclick="toggleDetailsModal()" class="absolute top-4 right-4 text-brand-blue/50 hover:text-brand-magenta transition-all"><i class="fa-solid fa-xmark text-2xl"></i></button>
+             
+             <h2 class="text-2xl font-serif text-brand-ice mb-8 text-center italic">Ghid Participare</h2>
+             
+             <div class="space-y-6 text-brand-blue/80 text-xs md:text-sm leading-relaxed mb-10">
+                 <div class="flex items-start gap-4">
+                     <span class="w-1.5 h-1.5 rounded-full bg-brand-magenta mt-2 flex-shrink-0"></span>
+                     <p>Alege locul/locurile preferate din grila de participare de mai sus.</p>
+                 </div>
+                 <div class="flex items-start gap-4">
+                     <span class="w-1.5 h-1.5 rounded-full bg-brand-magenta mt-2 flex-shrink-0"></span>
+                     <p>Contactează-ne pe WhatsApp pentru a valida locurile și a efectua plata.</p>
+                 </div>
+                 <div class="flex items-start gap-4">
+                     <span class="w-1.5 h-1.5 rounded-full bg-brand-magenta mt-2 flex-shrink-0"></span>
+                     <p>După confirmare, vei apărea automat în tabel cu imaginea ta de profil.</p>
+                 </div>
+                 <p class="text-brand-magenta font-bold pt-4 text-center italic">Extragerea are loc live imediat ce toate locurile sunt ocupate!</p>
+             </div>
+
+<a href="https://api.whatsapp.com/send?phone=4917675891440" target="_blank" class="w-full btn-wa flex items-center justify-center gap-4 py-5 rounded-full transition-all">
+    <i class="fa-brands fa-whatsapp text-3xl"></i>
+    <div class="flex flex-col items-start text-left text-[9px] font-bold uppercase tracking-[0.2em] leading-tight">
+        <span>Contactează-ne</span>
+        <span>pentru înscriere</span>
+    </div>
+</a>
+             
+             <p class="text-[8px] uppercase tracking-widest text-center mt-6 text-brand-ice/30">Transport rapid în toată România</p>
+        </div>
+    </div>
+</main>
+
+
+<!-- MODAL ADMIN: ALOCARE UTILIZATOR -->
+<div id="assignUserModal" class="fixed inset-0 z-[200] hidden flex items-center justify-center px-4">
+    <div class="absolute inset-0 bg-brand-dark/95 backdrop-blur-sm" onclick="closeAssignModal()"></div>
+    <div class="relative bg-[#1a0f2e] border border-brand-blue/30 p-8 w-full max-w-md text-center">
+        <h3 class="text-brand-ice font-serif text-xl mb-6">Alocă locul <span id="selected-slot-num"></span></h3>
+        <select id="user-selector" class="w-full bg-brand-dark border border-brand-blue/20 p-4 text-brand-ice text-sm mb-6 outline-none">
+            <option value="">Alege un utilizator...</option>
+        </select>
+        <button id="confirmAssignBtn" class="w-full bg-brand-magenta py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-brand-blue transition-all">Confirmă Alocarea</button>
+    </div>
+</div>
+
+
+<!-- AUTH MODALS -->
+<div id="authModal" class="fixed inset-0 z-[120] hidden flex items-center justify-center px-4">
+    <div class="absolute inset-0 bg-brand-dark/90 backdrop-blur-md" onclick="toggleAuthModal()"></div>
+    <div class="relative bg-[#1a0f2e] border border-brand-blue/20 p-8 md:p-12 w-full max-w-md rounded-sm shadow-2xl">
+        <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-brand-blue/50 hover:text-brand-ice"><i class="fa-solid fa-xmark text-2xl"></i></button>
+        <h2 id="auth-title" class="text-3xl font-serif text-brand-ice mb-8 text-center italic">Autentificare</h2>
+        <form id="authForm" class="space-y-6">
+            <input type="email" id="auth-email" placeholder="Email" required class="w-full bg-brand-dark/50 border border-brand-blue/10 px-4 py-3 text-brand-ice outline-none">
+            <input type="password" id="auth-pass" placeholder="Parolă" required class="w-full bg-brand-dark/50 border border-brand-blue/10 px-4 py-3 text-brand-ice outline-none">
+            <button type="submit" class="w-full bg-brand-magenta py-4 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-blue transition-all">Continuă</button>
+        </form>
+        <div class="relative my-8 text-center"><span class="absolute inset-0 flex items-center"><span class="w-full border-t border-brand-blue/10"></span></span><span class="relative bg-[#1a0f2e] px-4 text-[9px] uppercase tracking-widest text-brand-blue/30">sau</span></div>
+        <button onclick="window.authFunctions.loginWithGoogle()" class="w-full border border-brand-blue/20 py-4 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-brand-blue/10 transition-all flex items-center justify-center gap-3 text-brand-ice"><i class="fa-brands fa-google"></i> Intră cu Google</button>
+    </div>
+</div>
+
+<div id="userModal" class="fixed inset-0 z-[130] hidden flex items-center justify-center px-4">
+    <div class="absolute inset-0 bg-brand-dark/95 backdrop-blur-xl" onclick="toggleUserModal()"></div>
+    <div class="relative bg-[#1a0f2e] border border-brand-blue/20 p-10 w-full max-w-sm rounded-lg shadow-2xl text-center">
+        <img id="user-img" src="" class="w-24 h-24 mx-auto mb-6 rounded-full border-2 border-brand-magenta object-cover shadow-2xl">
+        <h3 id="user-name" class="text-brand-ice font-serif text-2xl mb-1 italic">Utilizator</h3>
+        <p id="user-email" class="text-brand-blue/50 text-[10px] uppercase tracking-widest mb-8"></p>
+        <button onclick="window.authFunctions.logout()" class="w-full border border-red-500/30 text-red-400 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-red-500 transition-all">Log Out</button>
+    </div>
+</div>
+
+
+<footer class="bg-[#0D071A] pt-24 pb-12 px-6 md:px-10 border-t border-brand-blue/10 relative overflow-hidden">
+    <!-- Fundal subtil cu reflexii -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-96 bg-brand-purple/5 blur-[120px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto text-center">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 items-start">
+            
+<!-- 1. BRAND COLUMN - Centered -->
+            <div class="flex flex-col items-center space-y-8 order-1">
+                <img 
+                    src="https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/botezuri.png?alt=media&token=952e6adf-9bf6-4ada-ac2f-c9de0cb19b3a" 
+                    alt="MC Logo" 
+                    class="w-32 md:w-40 opacity-90 hover:scale-105 transition-transform duration-500"
+                />
+                <p class="text-brand-blue/50 text-[11px] md:text-xs max-w-xs font-light leading-loose uppercase tracking-[0.2em]">
+                    MC Handmade Marry. <br>
+                    Artă botanică românească. Flori care nu se ofilesc niciodată, sculptate manual pentru momente de neuitat.
+                </p>
+                <div class="flex justify-center space-x-5">
+                    <a href="https://www.instagram.com/handmade.candles.mary" target="_blank" class="w-10 h-10 border border-brand-blue/20 rounded-full flex items-center justify-center text-brand-blue hover:bg-brand-magenta hover:border-transparent hover:text-white transition-all duration-300">
+                        <i class="fa-brands fa-instagram text-lg"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@handmade.candles.soap" target="_blank" class="w-10 h-10 border border-brand-blue/20 rounded-full flex items-center justify-center text-brand-blue hover:bg-brand-magenta hover:border-transparent hover:text-white transition-all duration-300">
+                        <i class="fa-brands fa-tiktok text-lg"></i>
+                    </a>
+                    <a href="https://api.whatsapp.com/send?phone=4917675891440" target="_blank" class="w-10 h-10 border border-brand-blue/20 rounded-full flex items-center justify-center text-brand-blue hover:bg-brand-magenta hover:border-transparent hover:text-white transition-all duration-300">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. NAVIGATION COLUMN - Centered -->
+            <div class="flex flex-col items-center order-2 md:order-2">
+                <h5 class="text-brand-ice text-[10px] uppercase tracking-[0.4em] mb-8 font-bold">Navigare</h5>
+                <ul class="text-brand-blue/60 text-[10px] space-y-5 font-medium tracking-[0.2em]">
+                    <li><a href="#home" class="hover:text-brand-magenta transition-colors">ACASĂ</a></li>
+                    <li><a href="#philosophy" class="hover:text-brand-magenta transition-colors">DESPRE BRAND</a></li>
+                    <li><a href="#collection" class="hover:text-brand-magenta transition-colors">GALERIE PRODUSE</a></li>
+                    <li><a href="#bespoke" class="hover:text-brand-magenta transition-colors">COMENZI SPECIALE</a></li>
+                </ul>
+            </div>
+
+<!-- 3. DEVELOPER COLUMN - Centered with Tri-Contact -->
+            <div class="flex flex-col items-center order-3 md:order-3">
+                <div class="relative group">
+                    <!-- Glow Effect -->
+                    <div class="absolute inset-0 bg-brand-ice/20 blur-2xl rounded-full group-hover:bg-brand-magenta/30 transition-all duration-700"></div>
+                    
+                    <!-- Creator Avatar -->
+                    <a href="https://www.tiktok.com/@lost_soul_zzz" target="_blank" class="relative block w-24 h-24 mb-6 rounded-full border-2 border-brand-ice/30 p-1 overflow-hidden transition-transform duration-500 group-hover:scale-110 group-hover:border-brand-magenta">
+                        <img 
+                            src="https://iili.io/f1ddIfe.png" 
+                            alt="Lost Soul" 
+                            class="w-full h-full object-cover rounded-full bg-[#0D071A]"
+                        />
+                    </a>
+                </div>
+                
+                <h6 class="text-brand-ice/80 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">Website realizat de</h6>
+                <p class="text-brand-magenta font-serif italic text-xl mb-4">Lost Soul / Nica Emmanuel</p>
+                
+                <!-- Contact Links Container -->
+                <div class="flex flex-col items-center gap-3">
+                    <span class="text-[9px] uppercase tracking-[0.4em] font-bold text-brand-blue/50">Contact Developer</span>
+                    
+                    <div class="flex items-center gap-6">
+                        <!-- Discord -->
+                        <a href="https://discord.com/users/1063511180376817755" target="_blank" class="text-brand-blue/50 hover:text-[#5865F2] hover:scale-125 transition-all duration-300" title="Discord">
+                            <i class="fa-brands fa-discord text-2xl"></i>
+                        </a>
+                        
+                        <!-- WhatsApp -->
+                        <a href="https://wa.link/anjgnu" target="_blank" class="text-brand-blue/50 hover:text-[#25D366] hover:scale-125 transition-all duration-300" title="WhatsApp">
+                            <i class="fa-brands fa-whatsapp text-2xl"></i>
+                        </a>
+
+                        <!-- TikTok -->
+                        <a href="https://www.tiktok.com/@lost_soul_zzz" target="_blank" class="text-brand-blue/50 hover:text-[#FE2C55] hover:scale-125 transition-all duration-300" title="TikTok">
+                            <i class="fa-brands fa-tiktok text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, collection, addDoc, onSnapshot, setDoc, updateDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+// Config Firebase
+const hmConfig = { apiKey: "AIzaSyBiZY4tIZGstiZhw_jiuhvNZ8ZtGCjQb5w", authDomain: "handmade-marry.firebaseapp.com", projectId: "handmade-marry" };
+const ksdaConfig = { apiKey: "AIzaSyDoH80kffNrzFAcyRqsTVdifs-whUhwH9A", projectId: "ksda-7546f", storageBucket: "ksda-7546f.firebasestorage.app" };
+
+const appHM = initializeApp(hmConfig);
+const appKSDA = initializeApp(ksdaConfig, "ksdaStorageApp");
+const auth = getAuth(appHM);
+const db = getFirestore(appHM);
+const storage = getStorage(appKSDA);
+
+const ADMIN_EMAILS = ["nicaemmanuel433qe@gmail.com", "hancimaria39@gmail.com"];
+const PLACEHOLDER_IMG = "https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/Clicker%2Fddf0110aa19f445687b737679eec9cb2.jpg?alt=media&token=82e56c76-0791-4f87-9aae-834014c496d8";
+
+let selectedSlot = null;
+let allUsersList = [];
+
+// AUTH FUNCTIONS
+window.authFunctions = {
+    loginWithGoogle: async () => {
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider);
+        const modal = document.getElementById('authModal');
+        if(modal) modal.classList.add('hidden');
+    },
+    logout: async () => { await signOut(auth); location.reload(); }
+};
+
+onAuthStateChanged(auth, async (user) => {
+    window.currentUser = user;
+    if (user) {
+        document.querySelectorAll('.login-trigger-text span').forEach(el => el.innerText = "Contul meu");
+        const userImg = document.getElementById('user-img');
+        const userName = document.getElementById('user-name');
+        const userEmail = document.getElementById('user-email');
+        if(userImg) userImg.src = user.photoURL || PLACEHOLDER_IMG;
+        if(userName) userName.innerText = user.displayName || "Utilizator";
+        if(userEmail) userEmail.innerText = user.email || "";
+
+        await setDoc(doc(db, "users", user.uid), { name: user.displayName, email: user.email, photo: user.photoURL }, { merge: true });
+
+        if (ADMIN_EMAILS.includes(user.email)) {
+            const adminSec = document.getElementById('admin-tombola-section');
+            if(adminSec) adminSec.classList.remove('hidden');
+            loadAllUsersForAdmin();
+        }
+    }
+    loadActiveTombola();
+});
+
+// LOGICA ADMIN
+async function loadAllUsersForAdmin() {
+    const selector = document.getElementById('user-selector');
+    if(!selector) return;
+    const snap = await getDocs(collection(db, "users"));
+    allUsersList = [];
+    selector.innerHTML = '<option value="">Alege un utilizator...</option>';
+    snap.forEach(doc => {
+        const u = { id: doc.id, ...doc.data() };
+        allUsersList.push(u);
+        selector.innerHTML += `<option value="${u.id}">${u.name || u.email}</option>`;
+    });
+}
+
+const createForm = document.getElementById('createTombolaForm');
+if(createForm) {
+    createForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const file = document.getElementById('t-image').files[0];
+        const title = document.getElementById('t-title').value;
+        const spots = parseInt(document.getElementById('t-spots').value);
+        const winners = parseInt(document.getElementById('t-winners').value);
+        const desc = document.getElementById('t-desc').value;
+        const duration = document.getElementById('t-duration').value;
+        const statusEl = document.getElementById('t-status');
+
+        if (!file || !title) return alert("Poza și Titlul sunt obligatorii!");
+
+        try {
+            if(statusEl) statusEl.innerText = "Se încarcă...";
+            const sRef = ref(storage, `tombola/${Date.now()}_prize`);
+            const task = await uploadBytesResumable(sRef, file);
+            const url = await getDownloadURL(task.ref);
+
+            let expire = new Date();
+            expire.setHours(expire.getHours() + (parseInt(duration) || 24));
+
+            await setDoc(doc(db, "raffle", "active"), {
+                title, spots, winnersCount: winners, description: desc, image: url,
+                expiresAt: expire.getTime(), entries: {}
+            });
+            if(statusEl) statusEl.innerText = "Tombolă activată!";
+        } catch (err) { alert(err.message); }
+    });
+}
+
+// NEW: Toggle Details Modal
+window.toggleDetailsModal = () => {
+    document.getElementById('detailsModal').classList.toggle('hidden');
+};
+
+// UPDATE: loadActiveTombola to check for winners instantly
+function loadActiveTombola() {
+    onSnapshot(doc(db, "raffle", "active"), (snap) => {
+        const container = document.getElementById('active-tombola-container');
+        const createForm = document.getElementById('createTombolaForm');
+        const adminControls = document.getElementById('admin-active-controls');
+        const countdownEl = document.getElementById('countdown');
+
+        if (!snap.exists()) {
+            if(container) container.classList.add('hidden');
+            if(createForm) createForm.classList.remove('hidden');
+            if(adminControls) adminControls.classList.add('hidden');
+            return;
+        }
+
+        const data = snap.data();
+        if(container) container.classList.remove('hidden');
+        if(createForm) createForm.classList.add('hidden');
+        if(adminControls) adminControls.classList.remove('hidden');
+
+        document.getElementById('display-t-title').innerText = data.title;
+        document.getElementById('display-t-desc').innerText = data.description;
+        document.getElementById('display-t-image').src = data.image;
+
+        renderGrid(data.spots, data.entries);
+        
+        // INSTANT CHECK: If winners exist, stop everything and show winners
+        if (data.winners) {
+            if(window.tombolaTimer) clearInterval(window.tombolaTimer);
+            if(countdownEl) countdownEl.innerText = "EXTRAGERE FINALIZATĂ";
+            highlightWinners(data.winners, data.entries);
+        } else {
+            startCountdown(data.expiresAt);
+        }
+    });
+}
+
+
+function renderGrid(total, entries) {
+    const grid = document.getElementById('tombola-grid');
+    if(!grid) return;
+    grid.innerHTML = '';
+    for (let i = 1; i <= total; i++) {
+        const entry = entries && entries[i];
+        const slot = document.createElement('div');
+        slot.id = `slot-${i}`;
+        slot.className = `aspect-square flex flex-col items-center justify-center border transition-all duration-500 p-1 overflow-hidden slot-default ${entry ? 'slot-occupied' : ''}`;
+
+        if (entry) {
+            const photo = entry.photo || PLACEHOLDER_IMG;  
+            slot.innerHTML = `
+                <img src="${photo}" onerror="this.src='${PLACEHOLDER_IMG}'" class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover border border-brand-blue/20 mb-1">
+                <span class="text-[7px] md:text-[9px] uppercase font-bold text-brand-ice truncate w-full text-center">${entry.name ? entry.name.split(' ')[0] : 'User'}</span>
+            `;
+        } else {
+            slot.innerHTML = `<span class="text-[10px] md:text-xs text-brand-blue/30 font-bold">${i}</span>`;
+        }
+        
+        slot.onclick = () => {
+            if (window.currentUser && ADMIN_EMAILS.includes(window.currentUser.email)) {
+                selectedSlot = i;
+                const slotNumEl = document.getElementById('selected-slot-num');
+                if(slotNumEl) slotNumEl.innerText = i;
+                const modal = document.getElementById('assignUserModal');
+                if(modal) modal.classList.remove('hidden');
+            }
+        };
+        grid.appendChild(slot);
+    }
+}
+
+// Audio Initialization
+const winAudio = new Audio("https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/dragon-studio-correct-472358.mp3?alt=media&token=46730ced-867b-4053-8871-e8102743e7cf");
+const loseAudio = new Audio("https://firebasestorage.googleapis.com/v0/b/ksda-7546f.firebasestorage.app/o/universfield-wrong-answer-129254.mp3?alt=media&token=074927c8-e4d7-4c8a-b925-7e7528adab7d");
+
+// Admin: Delete Raffle Function
+window.deleteCurrentRaffle = async () => {
+    if(confirm("Ești sigur că vrei să ȘTERGI tombola? Toate datele vor fi pierdute instantaneu.")) {
+        const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+        await deleteDoc(doc(db, "raffle", "active"));
+        // The onSnapshot in loadActiveTombola will automatically hide the UI for everyone
+    }
+};
+
+window.endTombolaNow = async () => {
+    const docRef = doc(db, "raffle", "active");
+    const unsub = onSnapshot(docRef, (snap) => {
+        unsub(); 
+        const data = snap.data();
+        if(!data || data.winners) return;
+
+        const participants = Object.keys(data.entries || {});
+        if(participants.length < data.winnersCount) {
+            return alert(`Eroare: Sunt doar ${participants.length} participanți. Nevoie de minim ${data.winnersCount}.`);
+        }
+
+        if(confirm("Începem extragerea live? Toți utilizatorii vor vedea animația.")) {
+            runSickAnimation(data);
+        }
+    });
+};
+
+async function runSickAnimation(data) {
+    const participantIds = Object.keys(data.entries);
+    const winnersCount = data.winnersCount;
+    let winners = [];
+    
+    let pool = [...participantIds];
+    for(let i=0; i<winnersCount; i++) {
+        const index = Math.floor(Math.random() * pool.length);
+        winners.push(pool.splice(index, 1)[0]);
+    }
+
+    const occupiedSlots = document.querySelectorAll('.slot-occupied');
+    const delay = (ms) => new Promise(res => setTimeout(res, ms));
+
+    // Phase 1: Tension Shuffle
+    for(let i=0; i<30; i++) {
+        document.querySelectorAll('.slot-highlight').forEach(el => el.classList.remove('slot-highlight'));
+        const randomSlot = occupiedSlots[Math.floor(Math.random() * occupiedSlots.length)];
+        if(randomSlot) randomSlot.classList.add('slot-highlight');
+        await delay(70); 
+    }
+    document.querySelectorAll('.slot-highlight').forEach(el => el.classList.remove('slot-highlight'));
+
+    // Phase 2: SLOW SEQUENTIAL REVEAL WITH SOUND
+    const revealOrder = [...participantIds].sort(() => Math.random() - 0.5);
+
+    for (const id of revealOrder) {
+        const el = document.getElementById(`slot-${id}`);
+        if(!el) continue;
+        
+        el.classList.add('slot-highlight');
+        await delay(600);
+        el.classList.remove('slot-highlight');
+        
+        if (winners.includes(id)) {
+            winAudio.currentTime = 0;
+            winAudio.play();
+            el.classList.add('slot-winner');
+            await delay(1200); 
+        } else {
+            loseAudio.currentTime = 0;
+            loseAudio.play();
+            el.classList.add('slot-eliminated');
+            await delay(300); 
+        }
+    }
+
+    // This instantly ends the countdown and marks winners for everyone
+    await updateDoc(doc(db, "raffle", "active"), { 
+        winners: winners,
+        expiresAt: Date.now() 
+    });
+}
+
+function highlightWinners(winners, entries) {
+    if(!winners || !entries) return;
+    
+    // Update the UI to show winners list below the title
+    const descEl = document.getElementById('display-t-desc');
+    let winnersHTML = `<div class="flex flex-wrap gap-3 mt-4 justify-center md:justify-start">`;
+
+    winners.forEach(id => {
+        const el = document.getElementById(`slot-${id}`);
+        if(el) el.classList.add('slot-winner');
+        
+        const winnerData = entries[id];
+        winnersHTML += `
+            <div class="flex items-center gap-2 bg-green-500/10 border border-green-500/30 p-2 rounded-sm">
+                <img src="${winnerData.photo || PLACEHOLDER_IMG}" class="w-6 h-6 rounded-full border border-green-500/50">
+                <span class="text-[9px] font-bold text-green-400 uppercase tracking-widest">${winnerData.name}</span>
+            </div>
+        `;
+    });
+    
+    winnersHTML += `</div>`;
+    if(descEl) descEl.innerHTML = `<span class="text-white font-bold">CÂȘTIGĂTORI:</span>` + winnersHTML;
+
+    // Turn all others Red
+    Object.keys(entries).forEach(id => {
+        if(!winners.includes(id)) {
+            const el = document.getElementById(`slot-${id}`);
+            if(el) el.classList.add('slot-eliminated');
+        }
+    });
+}
+
+const confirmBtn = document.getElementById('confirmAssignBtn');
+if(confirmBtn) {
+    confirmBtn.onclick = async () => {
+        const selector = document.getElementById('user-selector');
+        const uid = selector ? selector.value : null;
+        const user = allUsersList.find(u => u.id === uid);
+        if(!user) return alert("Alege un user!");
+        
+        await updateDoc(doc(db, "raffle", "active"), {
+            [`entries.${selectedSlot}`]: { 
+                uid: user.id, 
+                name: user.name || user.email || "Utilizator", 
+                photo: user.photo || "" 
+            }
+        });
+        closeAssignModal();
+    };
+}
+
+// UPDATE: startCountdown with explicit end-check
+function startCountdown(end) {
+    const el = document.getElementById('countdown');
+    if(!el) return;
+    if(window.tombolaTimer) clearInterval(window.tombolaTimer);
+    
+    const update = () => {
+        const diff = end - Date.now();
+        if (diff <= 0) {
+            el.innerText = "EXTRAGERE FINALIZATĂ";
+            clearInterval(window.tombolaTimer);
+            return;
+        }
+        const h = Math.floor(diff / 3600000).toString().padStart(2,'0');
+        const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2,'0');
+        const s = Math.floor((diff % 60000) / 1000).toString().padStart(2,'0');
+        el.innerText = `${h}:${m}:${s}`;
+    };
+    
+    update(); // Run once immediately
+    window.tombolaTimer = setInterval(update, 1000);
+}
+
+window.closeAssignModal = () => {
+    const modal = document.getElementById('assignUserModal');
+    if(modal) modal.classList.add('hidden');
+};
+
+// Image Preview Logic
+const tImgInput = document.getElementById('t-image');
+if(tImgInput) {
+    tImgInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const preview = document.getElementById('image-preview');
+                if(preview) preview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+</script>
+
+<script>
+    // UI UTILS
+    window.toggleMenu = function() {
+        document.getElementById('mobileMenu').classList.toggle('active');
+    };
+    window.toggleAuthModal = function() { 
+        document.getElementById('authModal').classList.toggle('hidden'); 
+    };
+    window.toggleUserModal = function() { 
+        document.getElementById('userModal').classList.toggle('hidden'); 
+    };
+    window.handleAccountClick = function() { 
+        window.currentUser ? window.toggleUserModal() : window.toggleAuthModal(); 
+    };
+
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('main-nav');
+        window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
+    });
+</script>
+
+
+
+
+</body>
+</html>
